@@ -1,0 +1,53 @@
+FROM ubuntu:xenial
+MAINTAINER Pranjal <pranjal@brave.com>
+
+RUN \
+  apt-get update && \
+  apt-get install -y build-essential curl autotools-dev automake gnupg2 && \
+  curl -fsSL "https://zlib.net/zlib-1.2.11.tar.gz" -o zlib-1.2.11.tar.gz && \
+  echo "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1  zlib-1.2.11.tar.gz" | shasum -a 256 -c - && \ 
+  tar -zxvf zlib-1.2.11.tar.gz && \
+  cd zlib-1.2.11 && \
+  ./configure --prefix=$PWD/install && \
+  make && make install && \
+  cd ..
+  
+RUN \  
+  curl -fsSL "https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz" -o libevent-2.1.8-stable.tar.gz && \
+  curl -fsSL "https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz.asc" -o libevent-2.1.8-stable.tar.gz.asc && \
+  gpg --keyserver pgp.mit.edu/ --recv 8EF8686D && \
+  gpg libevent-2.1.8-stable.tar.gz.asc && \
+  tar -zxvf libevent-2.1.8-stable.tar.gz && \
+  cd libevent-2.1.8-stable && \
+  ./configure --prefix=$PWD/install \
+              --disable-shared \
+              --enable-static \
+              --with-pic && \
+  make && make install && \
+  cd ..
+
+RUN \
+  curl -fsSL "https://www.openssl.org/source/openssl-1.0.2m.tar.gz" -o openssl-1.0.2m.tar.gz && \
+  echo "8c6ff15ec6b319b50788f42c7abc2890c08ba5a1cdcd3810eb9092deada37b0f  openssl-1.0.2m.tar.gz" | shasum -a 256 -c - && \ 
+  tar -xvzf openssl-1.0.2m.tar.gz && \
+  cd openssl-1.0.2m && \
+  ./config --prefix=$PWD/install no-shared no-dso && \
+  make && make install && \
+  cd ..
+
+RUN \  
+  curl -fsSL "https://www.torproject.org/dist/tor-0.3.2.10.tar.gz" -o tor-0.3.2.10.tar.gz && \
+  curl -fsSL "https://www.torproject.org/dist/tor-0.3.2.10.tar.gz.asc" -o tor-0.3.2.10.tar.gz.asc && \
+  gpg --keyserver pgp.mit.edu/ --recv 9E92B601 && \
+  gpg tor-0.3.2.10.tar.gz.asc && \
+  tar -xvzf tor-0.3.2.10.tar.gz && \
+  cd tor-0.3.2.10 && \
+  ./configure --prefix=$PWD/install \
+              --enable-static-tor \
+              --with-libevent-dir=$PWD/../libevent-2.1.8-stable/install \
+              --with-openssl-dir=$PWD/../openssl-1.0.2m/install \
+              --with-zlib-dir=$PWD/../zlib-1.2.11/install \
+              --disable-asciidoc && \
+  make && make install
+
+ENTRYPOINT while :; do read; done
