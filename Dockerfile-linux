@@ -3,28 +3,29 @@ MAINTAINER Pranjal <pranjal@brave.com>
 
 RUN \
   apt-get update && \
-  apt-get install -y build-essential curl autotools-dev automake gnupg2 && \
+  apt-get install -y build-essential curl autotools-dev automake gnupg2
+
+RUN \ 
   curl -fsSL "https://zlib.net/zlib-1.2.11.tar.gz" -o zlib-1.2.11.tar.gz && \
   echo "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1  zlib-1.2.11.tar.gz" | shasum -a 256 -c - && \ 
   tar -zxvf zlib-1.2.11.tar.gz && \
   cd zlib-1.2.11 && \
   ./configure --prefix=$PWD/install && \
-  make && make install && \
-  cd ..
+  make && make check && make install
   
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz" -o libevent-2.1.8-stable.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-2.1.8-stable/libevent-2.1.8-stable.tar.gz.asc" -o libevent-2.1.8-stable.tar.gz.asc && \
-  gpg --keyserver pgp.mit.edu/ --recv 8EF8686D && \
+  gpg --keyserver pgp.mit.edu/ --recv B86086848EF8686D && \
   gpg libevent-2.1.8-stable.tar.gz.asc && \
+  echo "965cc5a8bb46ce4199a47e9b2c9e1cae3b137e8356ffdad6d94d3b9069b71dc2  libevent-2.1.8-stable.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-2.1.8-stable.tar.gz && \
   cd libevent-2.1.8-stable && \
   ./configure --prefix=$PWD/install \
               --disable-shared \
               --enable-static \
               --with-pic && \
-  make && make install && \
-  cd ..
+  make && make check && make install
 
 RUN \
   curl -fsSL "https://www.openssl.org/source/openssl-1.0.2m.tar.gz" -o openssl-1.0.2m.tar.gz && \
@@ -32,14 +33,14 @@ RUN \
   tar -xvzf openssl-1.0.2m.tar.gz && \
   cd openssl-1.0.2m && \
   ./config --prefix=$PWD/install no-shared no-dso && \
-  make && make install && \
-  cd ..
+  make && make test && make install
 
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-0.3.2.10.tar.gz" -o tor-0.3.2.10.tar.gz && \
   curl -fsSL "https://www.torproject.org/dist/tor-0.3.2.10.tar.gz.asc" -o tor-0.3.2.10.tar.gz.asc && \
-  gpg --keyserver pgp.mit.edu/ --recv 9E92B601 && \
+  gpg --keyserver pgp.mit.edu/ --recv FE43009C4607B1FB && \
   gpg tor-0.3.2.10.tar.gz.asc && \
+  echo "60df77c31dcf94fdd686c8ca8c34f3b70243b33a7344ecc0b719d5ca2617cbee  tor-0.3.2.10.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-0.3.2.10.tar.gz && \
   cd tor-0.3.2.10 && \
   ./configure --prefix=$PWD/install \
@@ -48,6 +49,6 @@ RUN \
               --with-openssl-dir=$PWD/../openssl-1.0.2m/install \
               --with-zlib-dir=$PWD/../zlib-1.2.11/install \
               --disable-asciidoc && \
-  make && make install
+  make && make check && make install
 
 ENTRYPOINT while :; do read; done
