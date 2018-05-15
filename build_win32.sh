@@ -1,9 +1,6 @@
 #!/bin/sh
 set -eu
 
-BRAVE_TOR_VERSION="1"
-TOR_VERSION="0.3.2.10"
-
 rm -rf Tor/
 rm -rf Data/
 

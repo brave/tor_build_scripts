@@ -1,9 +1,6 @@
 #!/bin/sh
 set -eu
 
-BRAVE_TOR_VERSION="1"
-TOR_VERSION="0.3.2.10"
-
 curl -fsSL "https://www.torproject.org/dist/tor-0.3.2.10.tar.gz" -o tor-0.3.2.10.tar.gz
 curl -fsSL "https://www.torproject.org/dist/tor-0.3.2.10.tar.gz.asc" -o tor-0.3.2.10.tar.gz.asc
 
