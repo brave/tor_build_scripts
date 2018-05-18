@@ -1,10 +1,19 @@
 FROM ubuntu:xenial
 MAINTAINER Pranjal <pranjal@brave.com>
 
-ARG zlib_version=1.2.11
-ARG libevent_version=2.1.8-stable
-ARG openssl_version=1.0.2m
-ARG tor_version=0.3.2.10
+ARG zlib_version
+ARG zlib_hash
+
+ARG libevent_version
+ARG libevent_hash
+ARG libevent_key
+
+ARG openssl_version
+ARG openssl_hash
+
+ARG tor_version
+ARG tor_hash
+ARG tor_key
 
 RUN \
   apt-get update && \
@@ -12,7 +21,7 @@ RUN \
 
 RUN \ 
   curl -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o zlib-$zlib_version.tar.gz && \
-  echo "c3e5e9fdd5004dcb542feda5ee4f0ff0744628baf8ed2dd5d66f8ca1197cb1a1  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \ 
+  echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf zlib-$zlib_version.tar.gz && \
   cd zlib-$zlib_version && \
   ./configure --prefix=$PWD/install && \
@@ -21,9 +30,9 @@ RUN \
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
-  gpg --keyserver pgp.mit.edu/ --recv B86086848EF8686D && \
+  gpg --keyserver pool.sks-keyservers.net/ --recv-keys $libevent_key && \
   gpg libevent-$libevent_version.tar.gz.asc && \
-  echo "965cc5a8bb46ce4199a47e9b2c9e1cae3b137e8356ffdad6d94d3b9069b71dc2  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
+  echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-$libevent_version.tar.gz && \
   cd libevent-$libevent_version && \
   ./configure --prefix=$PWD/install \
@@ -34,7 +43,7 @@ RUN \
 
 RUN \
   curl -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o openssl-$openssl_version.tar.gz && \
-  echo "8c6ff15ec6b319b50788f42c7abc2890c08ba5a1cdcd3810eb9092deada37b0f  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \ 
+  echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf openssl-$openssl_version.tar.gz && \
   cd openssl-$openssl_version && \
   ./config --prefix=$PWD/install no-shared no-dso && \
@@ -43,9 +52,9 @@ RUN \
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
-  gpg --keyserver pgp.mit.edu/ --recv FE43009C4607B1FB && \
+  gpg --keyserver pool.sks-keyservers.net/ --recv-keys $tor_key && \
   gpg tor-$tor_version.tar.gz.asc && \
-  echo "60df77c31dcf94fdd686c8ca8c34f3b70243b33a7344ecc0b719d5ca2617cbee  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
+  echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-$tor_version.tar.gz && \
   cd tor-$tor_version && \
   ./configure --prefix=$PWD/install \
