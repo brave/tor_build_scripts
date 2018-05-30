@@ -15,6 +15,8 @@ ARG tor_version
 ARG tor_hash
 ARG tor_key
 
+ARG keyserver
+
 RUN \
   apt-get update && \
   apt-get install -y build-essential curl autotools-dev automake gnupg2
@@ -30,7 +32,7 @@ RUN \
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
-  gpg --keyserver pool.sks-keyservers.net/ --recv-keys $libevent_key && \
+  gpg --keyserver "$keyserver" --recv-keys $libevent_key && \
   gpg libevent-$libevent_version.tar.gz.asc && \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-$libevent_version.tar.gz && \
@@ -52,7 +54,7 @@ RUN \
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
-  gpg --keyserver pool.sks-keyservers.net/ --recv-keys $tor_key && \
+  gpg --keyserver "$keyserver" --recv-keys $tor_key && \
   gpg tor-$tor_version.tar.gz.asc && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-$tor_version.tar.gz && \
