@@ -78,7 +78,8 @@ RUN \
               --with-openssl-dir=$PWD/../openssl-$openssl_version/install \
               --with-zlib-dir=$PWD/../zlib-$zlib_version/install \
               --disable-asciidoc \
-              --host=i686-w64-mingw32 && \
+              --host=i686-w64-mingw32 \
+              LIBS=-lcrypt32 && \
   make ${jobs+-j$jobs} && make ${jobs+-j$jobs} install
 
 ENTRYPOINT while :; do read; done
