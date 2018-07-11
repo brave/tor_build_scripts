@@ -13,6 +13,10 @@ cd ..
 curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBEVENT_VERSION/libevent-$LIBEVENT_VERSION.tar.gz" -o libevent-$LIBEVENT_VERSION.tar.gz && \
 curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBEVENT_VERSION/libevent-$LIBEVENT_VERSION.tar.gz.asc" -o libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 
+#Apple messed up getentropy and clock_gettimesymbols when they added two functions in Sierra: 
+#they forgot to decorate them with appropriate AVAILABLE_MAC_OS_VERSION checks. 
+#So we have to explicitly disable them for binaries to work on MacOS 10.11.
+
 gpg --keyserver "$KEYSERVER" --recv-keys $LIBEVENT_KEY && \
 gpg libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
@@ -24,6 +28,7 @@ cd libevent-$LIBEVENT_VERSION && \
             --prefix=$PWD/install \
             --disable-shared \
             --enable-static \
+            --disable-clock-gettime \
             --with-pic && \
 make && make check && make install
 
@@ -41,7 +46,9 @@ cd tor-$TOR_VERSION && \
             --enable-static-openssl  \
             --with-libevent-dir=$PWD/../libevent-$LIBEVENT_VERSION/install \
             --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/install \
-            --disable-asciidoc && \
+            --disable-asciidoc \
+            ac_cv_func_getentropy=no \
+            ac_cv_func_clock_gettime=no && \
 make && make check
 cd ..
 
