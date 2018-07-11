@@ -17,6 +17,8 @@ ARG tor_key
 
 ARG keyserver
 
+ARG jobs
+
 RUN \
   apt-get update && \
   apt-get install -y build-essential curl autotools-dev automake gnupg2
@@ -27,7 +29,7 @@ RUN \
   tar -zxvf zlib-$zlib_version.tar.gz && \
   cd zlib-$zlib_version && \
   ./configure --prefix=$PWD/install && \
-  make && make check && make install
+  make ${jobs:+-j${jobs}} && make ${jobs:+-j$jobs} check && make install
   
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
@@ -41,7 +43,8 @@ RUN \
               --disable-shared \
               --enable-static \
               --with-pic && \
-  make && make check && make install
+  ulimit -n 65536 && \
+  make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
 RUN \
   curl -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o openssl-$openssl_version.tar.gz && \
@@ -49,7 +52,7 @@ RUN \
   tar -xvzf openssl-$openssl_version.tar.gz && \
   cd openssl-$openssl_version && \
   ./config --prefix=$PWD/install no-shared no-dso && \
-  make && make test && make install
+  make ${jobs:+-j$jobs} && make test && make install
 
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
@@ -65,6 +68,6 @@ RUN \
               --with-openssl-dir=$PWD/../openssl-$openssl_version/install \
               --with-zlib-dir=$PWD/../zlib-$zlib_version/install \
               --disable-asciidoc && \
-  make && make check && make install
+  make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
 ENTRYPOINT while :; do read; done
