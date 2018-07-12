@@ -6,8 +6,8 @@ docker build -t tor-brave -f Dockerfile-linux --build-arg tor_version=$TOR_VERSI
 docker run --name tor-brave -d tor-brave
 docker cp tor-brave:/tor-$TOR_VERSION/src/or/tor tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION
 
-if ldd tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION 2>&1 \
-       | egrep '(not found|/usr/local|/opt)'; then
-  printf >&2 'unexpected libraries'
+if ! ldd tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION 2>&1 \
+       | egrep -q 'not a dynamic executable'; then
+  printf >&2 'failed to make a statically linked tor executable'
   exit 1
 fi
