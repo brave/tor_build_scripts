@@ -25,6 +25,7 @@ RUN \
 
 RUN \ 
   curl -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o zlib-$zlib_version.tar.gz && \
+  shasum -a 256 zlib-$zlib_version.tar.gz && \
   echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf zlib-$zlib_version.tar.gz && \
   cd zlib-$zlib_version && \
@@ -36,6 +37,7 @@ RUN \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
   gpg --keyserver "$keyserver" --recv-keys $libevent_key && \
   gpg libevent-$libevent_version.tar.gz.asc && \
+  shasum -a 256 libevent-$libevent_version.tar.gz && \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-$libevent_version.tar.gz && \
   cd libevent-$libevent_version && \
@@ -48,6 +50,7 @@ RUN \
 
 RUN \
   curl -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o openssl-$openssl_version.tar.gz && \
+  shasum -a 256 openssl-$openssl_version.tar.gz && \
   echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf openssl-$openssl_version.tar.gz && \
   cd openssl-$openssl_version && \
@@ -59,6 +62,7 @@ RUN \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
   gpg --keyserver "$keyserver" --recv-keys $tor_key && \
   gpg tor-$tor_version.tar.gz.asc && \
+  shasum -a 256 tor-$tor_version.tar.gz && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-$tor_version.tar.gz && \
   cd tor-$tor_version && \
