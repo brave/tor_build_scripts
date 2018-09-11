@@ -52,4 +52,4 @@ cd tor-$TOR_VERSION && \
 make && make check
 cd ..
 
-cp tor-$TOR_VERSION/src/or/tor tor-darwin-$TOR_VERSION-brave-$BRAVE_TOR_VERSION
+cp tor-$TOR_VERSION/src/or/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
