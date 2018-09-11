@@ -3,8 +3,6 @@
 export BRAVE_TOR_VERSION="6"
 export TOR_VERSION="0.3.4.8"
 
-# Tor has not released the win32 expert bundle for 0.3.3.6.
-export TOR_WIN32_VERSION="0.3.2.10"
 export ZLIB_VERSION=1.2.11
 export LIBEVENT_VERSION=2.1.8-stable
 export OPENSSL_VERSION=1.0.2o
