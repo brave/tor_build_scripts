@@ -42,14 +42,15 @@ gpg tor-$TOR_VERSION.tar.gz.asc
 echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf tor-$TOR_VERSION.tar.gz
 cd tor-$TOR_VERSION && \
-./configure --enable-static-libevent \
+./configure --prefix=$PWD/install \
+            --enable-static-libevent \
             --enable-static-openssl  \
             --with-libevent-dir=$PWD/../libevent-$LIBEVENT_VERSION/install \
             --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/install \
             --disable-asciidoc \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no && \
-make && make check
+make && make check && make install
 cd ..
 
-cp tor-$TOR_VERSION/src/or/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
+cp tor-$TOR_VERSION/install/bin/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
