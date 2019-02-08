@@ -1,12 +1,21 @@
 #!/bin/sh
 set -eu
+if [ $# -eq 1 ]; then
+  re='^[0-9]+$'
+  if ! [[ $1 =~ $re ]] ; then
+    echo "Invalid number of cores" >&2; exit 1
+  fi
+  jobs=$1
+else
+  jobs=$(sysctl -n hw.logicalcpu_max)
+fi
 
 curl -fsSL "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" -o openssl-$OPENSSL_VERSION.tar.gz && \
 echo "$OPENSSL_HASH  openssl-$OPENSSL_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf openssl-$OPENSSL_VERSION.tar.gz && \
 cd openssl-$OPENSSL_VERSION && \
 ./config --prefix=$PWD/install darwin64-x86_64-cc no-shared no-dso && \
-make
+make ${jobs:+-j${jobs}}
 
 cd ..
 
@@ -17,10 +26,16 @@ curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBE
 #they forgot to decorate them with appropriate AVAILABLE_MAC_OS_VERSION checks. 
 #So we have to explicitly disable them for binaries to work on MacOS 10.11.
 
+# Using test/regress.c from a local repo because make check hangs in libevent
+# See: https://github.com/libevent/libevent/issues/747 for more details
+# Updated test/regress.cc disables: del_wait | immediatesignal | 
+# signal_switchbase | signal_while_processing tests
+
 gpg --keyserver "$KEYSERVER" --recv-keys $LIBEVENT_KEY && \
 gpg libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf libevent-$LIBEVENT_VERSION.tar.gz && \
+cp patch/libevent/test/regress.c libevent-$LIBEVENT_VERSION/test/regress.c && \
 cd libevent-$LIBEVENT_VERSION && \
 ./configure \
             LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION" \
@@ -30,7 +45,7 @@ cd libevent-$LIBEVENT_VERSION && \
             --enable-static \
             --disable-clock-gettime \
             --with-pic && \
-make && make check && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make ${jobs:+-j${jobs}} install
 
 cd ..
 
@@ -50,7 +65,7 @@ cd tor-$TOR_VERSION && \
             --disable-asciidoc \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no && \
-make && make check && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ..
 
 cp tor-$TOR_VERSION/install/bin/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
