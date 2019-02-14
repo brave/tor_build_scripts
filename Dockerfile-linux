@@ -6,18 +6,17 @@ ARG zlib_hash
 
 ARG libevent_version
 ARG libevent_hash
-ARG libevent_key
 
 ARG openssl_version
 ARG openssl_hash
 
 ARG tor_version
 ARG tor_hash
-ARG tor_key
-
-ARG keyserver
 
 ARG jobs
+
+COPY gpg-keys/tor.gpg /tor.gpg
+COPY gpg-keys/libevent.gpg /libevent.gpg
 
 RUN \
   apt-get update && \
@@ -35,7 +34,7 @@ RUN \
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
-  gpg --keyserver "$keyserver" --recv-keys $libevent_key && \
+  gpg --import /libevent.gpg && \
   gpg libevent-$libevent_version.tar.gz.asc && \
   shasum -a 256 libevent-$libevent_version.tar.gz && \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
@@ -60,7 +59,7 @@ RUN \
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
-  gpg --keyserver "$keyserver" --recv-keys $tor_key && \
+  gpg --import /tor.gpg && \
   gpg tor-$tor_version.tar.gz.asc && \
   shasum -a 256 tor-$tor_version.tar.gz && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \

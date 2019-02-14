@@ -31,7 +31,7 @@ curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBE
 # Updated test/regress.cc disables: del_wait | immediatesignal | 
 # signal_switchbase | signal_while_processing tests
 
-gpg --keyserver "$KEYSERVER" --recv-keys $LIBEVENT_KEY && \
+gpg --import gpg-keys/libevent.gpg && \
 gpg libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf libevent-$LIBEVENT_VERSION.tar.gz && \
@@ -52,7 +52,7 @@ cd ..
 curl -fsSL "https://www.torproject.org/dist/tor-$TOR_VERSION.tar.gz" -o tor-$TOR_VERSION.tar.gz
 curl -fsSL "https://www.torproject.org/dist/tor-$TOR_VERSION.tar.gz.asc" -o tor-$TOR_VERSION.tar.gz.asc
 
-gpg --keyserver "$KEYSERVER" --recv-keys $TOR_KEY
+gpg --import gpg-keys/tor.gpg
 gpg tor-$TOR_VERSION.tar.gz.asc
 echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf tor-$TOR_VERSION.tar.gz
