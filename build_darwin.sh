@@ -14,7 +14,7 @@ curl -fsSL "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" -o o
 echo "$OPENSSL_HASH  openssl-$OPENSSL_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf openssl-$OPENSSL_VERSION.tar.gz && \
 cd openssl-$OPENSSL_VERSION && \
-./config --prefix=$PWD/install darwin64-x86_64-cc no-shared no-dso && \
+./Configure --prefix=$PWD/install darwin64-x86_64-cc no-shared no-dso && \
 make ${jobs:+-j${jobs}}
 
 cd ..
@@ -61,11 +61,11 @@ cd tor-$TOR_VERSION && \
             --enable-static-libevent \
             --enable-static-openssl  \
             --with-libevent-dir=$PWD/../libevent-$LIBEVENT_VERSION/install \
-            --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/install \
+            --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/ \
             --disable-asciidoc \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no && \
-make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check
 cd ..
 
-cp tor-$TOR_VERSION/install/bin/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
+cp tor-$TOR_VERSION/src/app/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
