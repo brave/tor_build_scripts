@@ -14,7 +14,7 @@ curl -fsSL "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" -o o
 echo "$OPENSSL_HASH  openssl-$OPENSSL_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf openssl-$OPENSSL_VERSION.tar.gz && \
 cd openssl-$OPENSSL_VERSION && \
-./Configure --prefix=$PWD/install darwin64-x86_64-cc no-shared no-dso && \
+./Configure --prefix=$PWD/root darwin64-x86_64-cc no-shared no-dso && \
 make ${jobs:+-j${jobs}}
 
 cd ..
@@ -38,7 +38,7 @@ tar -zxvf libevent-$LIBEVENT_VERSION.tar.gz && \
 cp patch/libevent/test/regress.c libevent-$LIBEVENT_VERSION/test/regress.c && \
 cd libevent-$LIBEVENT_VERSION && \
 ./configure \
-            LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION" \
+            LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root" \
             CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \
             --prefix=$PWD/install \
             --disable-shared \
@@ -57,15 +57,15 @@ gpg tor-$TOR_VERSION.tar.gz.asc
 echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf tor-$TOR_VERSION.tar.gz
 cd tor-$TOR_VERSION && \
-./configure --prefix=$PWD/install \
+./configure --prefix=$PWD/root \
             --enable-static-libevent \
             --enable-static-openssl  \
             --with-libevent-dir=$PWD/../libevent-$LIBEVENT_VERSION/install \
-            --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/ \
+            --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/root \
             --disable-asciidoc \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no && \
-make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ..
 
-cp tor-$TOR_VERSION/src/app/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
+cp tor-$TOR_VERSION/root/bin/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
