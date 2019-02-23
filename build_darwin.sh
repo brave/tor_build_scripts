@@ -15,7 +15,7 @@ echo "$OPENSSL_HASH  openssl-$OPENSSL_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf openssl-$OPENSSL_VERSION.tar.gz && \
 cd openssl-$OPENSSL_VERSION && \
 ./Configure --prefix=$PWD/root darwin64-x86_64-cc no-shared no-dso && \
-make ${jobs:+-j${jobs}}
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} install
 
 cd ..
 
@@ -45,7 +45,7 @@ cd libevent-$LIBEVENT_VERSION && \
             --enable-static \
             --disable-clock-gettime \
             --with-pic && \
-make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make ${jobs:+-j${jobs}} install
+make ${jobs:+-j${jobs}} && make check && make install
 
 cd ..
 
