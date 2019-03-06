@@ -28,13 +28,14 @@ curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBE
 
 # Using test/regress.c from a local repo because make check hangs in libevent
 # See: https://github.com/libevent/libevent/issues/747 for more details
-# Updated test/regress.cc disables: del_wait | immediatesignal | 
-# signal_switchbase | signal_while_processing tests
+# Updated test/regress.cc disables: immediatesignal | signal_switchbase
+# | signal_while_processing tests
 
 gpg --import gpg-keys/libevent.gpg && \
 gpg libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf libevent-$LIBEVENT_VERSION.tar.gz && \
+cp patch/libevent/test/regress.c libevent-$LIBEVENT_VERSION/test/regress.c && \
 cd libevent-$LIBEVENT_VERSION && \
 ./configure \
             LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root" \
