@@ -35,7 +35,6 @@ gpg --import gpg-keys/libevent.gpg && \
 gpg libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf libevent-$LIBEVENT_VERSION.tar.gz && \
-cp patch/libevent/test/regress.c libevent-$LIBEVENT_VERSION/test/regress.c && \
 cd libevent-$LIBEVENT_VERSION && \
 ./configure \
             LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root" \
