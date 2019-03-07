@@ -30,12 +30,14 @@ curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBE
 # See: https://github.com/libevent/libevent/issues/747 for more details
 # Updated test/regress.cc disables: immediatesignal | signal_switchbase
 # | signal_while_processing tests
+# Updated test/regress_bufferevent.c disables: test_bufferevent_pair_release_lock
 
 gpg --import gpg-keys/libevent.gpg && \
 gpg libevent-$LIBEVENT_VERSION.tar.gz.asc && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf libevent-$LIBEVENT_VERSION.tar.gz && \
 cp patch/libevent/test/regress.c libevent-$LIBEVENT_VERSION/test/regress.c && \
+cp patch/libevent/test/regress_bufferevent.c libevent-$LIBEVENT_VERSION/test/regress_bufferevent.c && \
 cd libevent-$LIBEVENT_VERSION && \
 ./configure \
             LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root" \
