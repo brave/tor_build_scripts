@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export BRAVE_TOR_VERSION="1"
+export BRAVE_TOR_VERSION="0"
 export TOR_VERSION="0.3.5.8"
 
 export ZLIB_VERSION=1.2.11
