@@ -10,6 +10,15 @@ else
   jobs=$(sysctl -n hw.logicalcpu_max)
 fi
 
+curl -fsSL "https://zlib.net/zlib-$ZLIB_VERSION.tar.gz" -o zlib-$ZLIB_VERSION.tar.gz
+shasum -a 256 zlib-$ZLIB_VERSION.tar.gz && \
+echo "$ZLIB_HASH  zlib-$ZLIB_VERSION.tar.gz" | shasum -a 256 -c - && \
+tar -xvzf zlib-$ZLIB_VERSION.tar.gz
+cd zlib-$ZLIB_VERSION
+./configure --prefix=$PWD/root
+make ${jobs:+-j${jobs}} && make ${jobs:+-j$jobs} check && make install
+cd ..
+
 curl -fsSL "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" -o openssl-$OPENSSL_VERSION.tar.gz && \
 echo "$OPENSSL_HASH  openssl-$OPENSSL_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf openssl-$OPENSSL_VERSION.tar.gz && \
@@ -64,6 +73,7 @@ cd tor-$TOR_VERSION && \
             --enable-static-openssl  \
             --with-libevent-dir=$PWD/../libevent-$LIBEVENT_VERSION/install \
             --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/root \
+            --with-zlib-dir=$PWD/../zlib-$ZLIB_VERSION/root \
             --disable-asciidoc \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no && \
