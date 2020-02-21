@@ -71,6 +71,7 @@ cd tor-$TOR_VERSION && \
 ./configure --prefix=$PWD/root \
             --enable-static-libevent \
             --enable-static-openssl  \
+            --enable-static-zlib  \
             --with-libevent-dir=$PWD/../libevent-$LIBEVENT_VERSION/install \
             --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/root \
             --with-zlib-dir=$PWD/../zlib-$ZLIB_VERSION/root \
