@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export XZ_DIR='/usr/local/opt/xz/lib'
+export NEW_XZ_DIR='/usr/local/opt/xz/brave-lib'
+
 export BRAVE_TOR_VERSION="1"
 export TOR_VERSION="0.3.5.8"
 
