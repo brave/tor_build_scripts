@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export MACOSX_DEPLOYMENT_TARGET=10.10
+
 export XZ_DIR='/usr/local/opt/xz/lib'
 export NEW_XZ_DIR='/usr/local/opt/xz/brave-lib'
 
