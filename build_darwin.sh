@@ -63,11 +63,10 @@ cd ..
 curl -fsSL "https://www.torproject.org/dist/tor-$TOR_VERSION.tar.gz" -o tor-$TOR_VERSION.tar.gz
 curl -fsSL "https://www.torproject.org/dist/tor-$TOR_VERSION.tar.gz.asc" -o tor-$TOR_VERSION.tar.gz.asc
 
-gpg --import gpg-keys/tor.gpg
-gpg tor-$TOR_VERSION.tar.gz.asc
+gpg --import gpg-keys/tor.gpg && \
+gpg tor-$TOR_VERSION.tar.gz.asc && \
 echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" | shasum -a 256 -c - && \
-mv $XZ_DIR $NEW_XZ_DIR
-tar -xvzf tor-$TOR_VERSION.tar.gz
+tar -xvzf tor-$TOR_VERSION.tar.gz && \
 cd tor-$TOR_VERSION && \
 ./configure --prefix=$PWD/root \
             --enable-static-libevent \
@@ -77,10 +76,10 @@ cd tor-$TOR_VERSION && \
             --with-openssl-dir=$PWD/../openssl-$OPENSSL_VERSION/root \
             --with-zlib-dir=$PWD/../zlib-$ZLIB_VERSION/root \
             --disable-asciidoc \
+            --disable-lzma \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no && \
 make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
-mv $NEW_XZ_DIR $XZ_DIR
 cd ..
 
 cp tor-$TOR_VERSION/root/bin/tor tor-$TOR_VERSION-darwin-brave-$BRAVE_TOR_VERSION
