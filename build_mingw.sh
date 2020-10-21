@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-docker rm -fv tor-brave-mingw || true
+docker rm -fv tor-brave-mingw 2>/dev/null || true
 docker build -t tor-brave-mingw -f Dockerfile-mingw \
     --build-arg tor_version=$TOR_VERSION \
     --build-arg zlib_version=$ZLIB_VERSION \
