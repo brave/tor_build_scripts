@@ -28,9 +28,18 @@ RUN \
   echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf zlib-$zlib_version.tar.gz && \
   cd zlib-$zlib_version && \
-  ./configure --prefix=$PWD/install && \
+  ./configure --prefix=$PWD/root && \
   make ${jobs:+-j${jobs}} && make ${jobs:+-j$jobs} check && make install
-  
+
+RUN \
+  curl -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o openssl-$openssl_version.tar.gz && \
+  shasum -a 256 openssl-$openssl_version.tar.gz && \
+  echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
+  tar -xvzf openssl-$openssl_version.tar.gz && \
+  cd openssl-$openssl_version && \
+  ./config --prefix=$PWD/root no-shared no-dso && \
+  make ${jobs:+-j$jobs} && make test && make install
+
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
@@ -40,21 +49,15 @@ RUN \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-$libevent_version.tar.gz && \
   cd libevent-$libevent_version && \
-  ./configure --prefix=$PWD/install \
+  ./configure \
+              LDFLAGS="-L$PWD/../openssl-$openssl_version/root" \
+              CPPFLAGS="-I$PWD/../oppenssl-$openssl_version/include" \
+              --prefix=$PWD/install \
               --disable-shared \
               --enable-static \
               --with-pic && \
   ulimit -n 65536 && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
-
-RUN \
-  curl -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o openssl-$openssl_version.tar.gz && \
-  shasum -a 256 openssl-$openssl_version.tar.gz && \
-  echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
-  tar -xvzf openssl-$openssl_version.tar.gz && \
-  cd openssl-$openssl_version && \
-  ./config --prefix=$PWD/install no-shared no-dso && \
-  make ${jobs:+-j$jobs} && make test && make install
 
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
@@ -68,8 +71,8 @@ RUN \
   ./configure --prefix=$PWD/install \
               --enable-static-tor \
               --with-libevent-dir=$PWD/../libevent-$libevent_version/install \
-              --with-openssl-dir=$PWD/../openssl-$openssl_version/install \
-              --with-zlib-dir=$PWD/../zlib-$zlib_version/install \
+              --with-openssl-dir=$PWD/../openssl-$openssl_version/root \
+              --with-zlib-dir=$PWD/../zlib-$zlib_version/root \
               --disable-asciidoc && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
