@@ -12,13 +12,13 @@ fi
 
 rm -rf arm64 && mkdir arm64
 
-curl -fsSL "https://zlib.net/zlib-$ZLIB_VERSION.tar.gz" -o zlib-$ZLIB_VERSION.tar.gz
+curl -fsSL "https://netactuate.dl.sourceforge.net/project/libpng/zlib/$ZLIB_VERSION/zlib-$ZLIB_VERSION.tar.gz" -o zlib-$ZLIB_VERSION.tar.gz
 shasum -a 256 zlib-$ZLIB_VERSION.tar.gz && \
 echo "$ZLIB_HASH  zlib-$ZLIB_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf zlib-$ZLIB_VERSION.tar.gz -C arm64 && \
 cd arm64/zlib-$ZLIB_VERSION && \
 CFLAGS="-target arm64-apple-macos11" LDFLAGS="-target arm64-apple-macos11" ./configure --prefix=$PWD/root && \
-make ${jobs:+-j${jobs}} && make ${jobs:+-j$jobs} check && make install && \
+make ${jobs:+-j${jobs}} && make install && \
 cd ../../
 
 curl -fsSL "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" -o openssl-$OPENSSL_VERSION.tar.gz && \
