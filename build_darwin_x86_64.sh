@@ -1,5 +1,10 @@
 #!/bin/sh
 set -eu
+
+SDK_PATH=$(xcrun --show-sdk-path)
+XCODE_LIB="$SDK_PATH/usr/lib/"
+XCODE_INCLUDE="$SDK_PATH/usr/include/"
+
 if [ $# -eq 1 ]; then
   re='^[0-9]+$'
   if ! [[ $1 =~ $re ]] ; then
@@ -63,7 +68,10 @@ gpg tor-$TOR_VERSION.tar.gz.asc && \
 echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf tor-$TOR_VERSION.tar.gz -C x86_64 && \
 cd x86_64/tor-$TOR_VERSION && \
-./configure --prefix=$PWD/root \
+./configure \
+            LDFLAGS="-L$XCODE_LIB" \
+            CPPFLAGS="-I$XCODE_INCLUDE" \
+            --prefix=$PWD/root \
             --enable-static-libevent \
             --enable-static-openssl  \
             --enable-static-zlib  \
