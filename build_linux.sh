@@ -1,8 +1,14 @@
 #!/bin/sh
 set -eu
 
-docker rm -fv tor-brave 2>/dev/null || true
-docker build -t tor-brave -f Dockerfile-linux \
+cleanup () {
+  echo "cleaning up docker containers/images"
+  docker rm -f tor-brave || true
+  docker rmi tor-brave || true
+}
+
+cleanup
+docker build --no-cache -t tor-brave -f Dockerfile-linux \
     --build-arg tor_version=$TOR_VERSION \
     --build-arg zlib_version=$ZLIB_VERSION \
     --build-arg libevent_version=$LIBEVENT_VERSION \
@@ -12,7 +18,7 @@ docker build -t tor-brave -f Dockerfile-linux \
     --build-arg openssl_hash=$OPENSSL_HASH \
     --build-arg tor_hash=$TOR_HASH \
     ${1+"$@"} .
-docker run --name tor-brave -d tor-brave
+docker run --rm --name tor-brave -d tor-brave
 docker cp tor-brave:/tor-$TOR_VERSION/install/bin/tor tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION
 
 if ! ldd tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION 2>&1 \
@@ -20,3 +26,5 @@ if ! ldd tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION 2>&1 \
   printf >&2 'failed to make a statically linked tor executable'
   exit 1
 fi
+
+trap cleanup EXIT
