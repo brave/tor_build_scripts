@@ -76,4 +76,4 @@ RUN \
               --disable-asciidoc && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
-ENTRYPOINT while :; do read; done
+ENTRYPOINT ["sh", "-c", "while true; do sleep 2; done"]

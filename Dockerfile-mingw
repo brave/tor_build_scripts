@@ -84,4 +84,4 @@ RUN \
               LIBS=-lcrypt32 && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} install
 
-ENTRYPOINT while :; do read; done
+ENTRYPOINT ["sh", "-c", "while true; do sleep 2; done"]
