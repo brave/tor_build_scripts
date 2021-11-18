@@ -47,10 +47,9 @@ gpg --import gpg-keys/libevent.gpg && \
 gpg "libevent-$LIBEVENT_VERSION.tar.gz.asc" && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C x86_64 && \
-cp patch/libevent/test/regress_bufferevent.c "x86_64/libevent-$LIBEVENT_VERSION/test/regress_bufferevent.c" && \
 cd "x86_64/libevent-$LIBEVENT_VERSION" && \
 ./configure \
-            LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root" \
+            LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib" \
             CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \
             --prefix="$PWD/install" \
             --disable-shared \
