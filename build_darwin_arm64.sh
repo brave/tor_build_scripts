@@ -51,10 +51,9 @@ curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBE
 gpg --keyring gpg-keys/libevent.gpg --verify "libevent-$LIBEVENT_VERSION.tar.gz.asc" "libevent-$LIBEVENT_VERSION.tar.gz" && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C arm64 && \
-cp patch/libevent/test/regress_bufferevent.c "arm64/libevent-$LIBEVENT_VERSION/test/regress_bufferevent.c" && \
 cd "arm64/libevent-$LIBEVENT_VERSION" && \
 ./configure \
-	    LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root --target=arm64-apple-macos11" \
+	    LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib --target=arm64-apple-macos11" \
 	    CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include --target=arm64-apple-macos11" \
 	    --prefix="$PWD/install" \
 	    --disable-shared \
