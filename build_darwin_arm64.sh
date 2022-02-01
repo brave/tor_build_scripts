@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+echo "running build_darwin_arm64.sh..."
+
 SDK_PATH=$(xcrun --show-sdk-path)
 XCODE_LIB="$SDK_PATH/usr/lib/"
 XCODE_INCLUDE="$SDK_PATH/usr/include/"
@@ -84,6 +86,7 @@ cd "arm64/tor-$TOR_VERSION" && \
 	    --with-zlib-dir="$PWD/../zlib-$ZLIB_VERSION/root" \
 	    --disable-asciidoc \
 	    --disable-lzma \
+            --disable-zstd \
             --host=arm-apple-darwin \
             --disable-tool-name-check \
 	    ac_cv_func_getentropy=no \

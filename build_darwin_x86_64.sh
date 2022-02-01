@@ -1,6 +1,8 @@
 #!/bin/sh
 set -eu
 
+echo "running build_darwin_x86_64.sh..."
+
 SDK_PATH=$(xcrun --show-sdk-path)
 XCODE_LIB="$SDK_PATH/usr/lib/"
 XCODE_INCLUDE="$SDK_PATH/usr/include/"
