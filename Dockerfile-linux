@@ -43,8 +43,7 @@ RUN \
 RUN \  
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
-  gpg --import /libevent.gpg && \
-  gpg libevent-$libevent_version.tar.gz.asc && \
+  gpg --keyring /libevent.gpg --verify libevent-$libevent_version.tar.gz.asc libevent-$libevent_version.tar.gz && \
   shasum -a 256 libevent-$libevent_version.tar.gz && \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-$libevent_version.tar.gz && \
@@ -62,8 +61,7 @@ RUN \
 RUN \  
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
-  gpg --import /tor.gpg && \
-  gpg tor-$tor_version.tar.gz.asc && \
+  gpg --keyring /tor.gpg --verify tor-$tor_version.tar.gz.asc tor-$tor_version.tar.gz && \
   shasum -a 256 tor-$tor_version.tar.gz && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-$tor_version.tar.gz && \

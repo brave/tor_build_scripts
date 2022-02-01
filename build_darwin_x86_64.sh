@@ -45,8 +45,7 @@ curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$LIBE
 
 # Updated test/regress_bufferevent.c disables: test_bufferevent_pair_release_lock
 
-gpg --import gpg-keys/libevent.gpg && \
-gpg "libevent-$LIBEVENT_VERSION.tar.gz.asc" && \
+gpg --keyring gpg-keys/libevent.gpg --verify "libevent-$LIBEVENT_VERSION.tar.gz.asc" "libevent-$LIBEVENT_VERSION.tar.gz" && \
 echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C x86_64 && \
 cp patch/libevent/test/regress_bufferevent.c "x86_64/libevent-$LIBEVENT_VERSION/test/regress_bufferevent.c" && \
@@ -65,8 +64,7 @@ cd ../../
 curl -fsSL "https://www.torproject.org/dist/tor-$TOR_VERSION.tar.gz" -o "tor-$TOR_VERSION.tar.gz"
 curl -fsSL "https://www.torproject.org/dist/tor-$TOR_VERSION.tar.gz.asc" -o "tor-$TOR_VERSION.tar.gz.asc"
 
-gpg --import gpg-keys/tor.gpg && \
-gpg "tor-$TOR_VERSION.tar.gz.asc" && \
+gpg --keyring gpg-keys/tor.gpg --verify "tor-$TOR_VERSION.tar.gz.asc" "tor-$TOR_VERSION.tar.gz" && \
 echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" | shasum -a 256 -c - && \
 tar -xvzf "tor-$TOR_VERSION.tar.gz" -C x86_64 && \
 cd "x86_64/tor-$TOR_VERSION" && \
