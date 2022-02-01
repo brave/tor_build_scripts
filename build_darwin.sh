@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 sh build_darwin_arm64.sh
 sh build_darwin_x86_64.sh
 
