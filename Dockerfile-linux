@@ -24,7 +24,6 @@ RUN \
 
 RUN \ 
   curl -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o zlib-$zlib_version.tar.gz && \
-  shasum -a 256 zlib-$zlib_version.tar.gz && \
   echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf zlib-$zlib_version.tar.gz && \
   cd zlib-$zlib_version && \
@@ -33,7 +32,6 @@ RUN \
 
 RUN \
   curl -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o openssl-$openssl_version.tar.gz && \
-  shasum -a 256 openssl-$openssl_version.tar.gz && \
   echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf openssl-$openssl_version.tar.gz && \
   cd openssl-$openssl_version && \
@@ -44,13 +42,11 @@ RUN \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o libevent-$libevent_version.tar.gz && \
   curl -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o libevent-$libevent_version.tar.gz.asc && \
   gpg --keyring /libevent.gpg --verify libevent-$libevent_version.tar.gz.asc libevent-$libevent_version.tar.gz && \
-  shasum -a 256 libevent-$libevent_version.tar.gz && \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf libevent-$libevent_version.tar.gz && \
   cd libevent-$libevent_version && \
   ./configure \
-              LDFLAGS="-L$PWD/../openssl-$openssl_version/root/lib" \
-              CPPFLAGS="-I$PWD/../oppenssl-$openssl_version/include" \
+              --disable-openssl \
               --prefix=$PWD/install \
               --disable-shared \
               --enable-static \
@@ -62,7 +58,6 @@ RUN \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
   curl -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
   gpg --keyring /tor.gpg --verify tor-$tor_version.tar.gz.asc tor-$tor_version.tar.gz && \
-  shasum -a 256 tor-$tor_version.tar.gz && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-$tor_version.tar.gz && \
   cd tor-$tor_version && \

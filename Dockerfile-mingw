@@ -56,8 +56,7 @@ RUN \
   tar -zxvf libevent-$libevent_version.tar.gz && \
   cd libevent-$libevent_version && \
   ./configure \
-              LDFLAGS="-L$PWD/../openssl-$openssl_version/root/lib" \
-              CPPFLAGS="-I$PWD/../oppenssl-$openssl_version/include" \
+              --disable-openssl \
               --prefix=$PWD/install \
               --disable-shared \
               --enable-static \
