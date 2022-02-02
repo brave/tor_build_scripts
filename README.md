@@ -8,7 +8,7 @@ GPG keyservers are known to be flaky so we include the keys in the repo:
 
 Generating `tor.gpg`
 ```
-$ gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 2133BC600AB133E1D826D173FE43009C4607B1FB
+$ gpg --keyserver hkps://keyserver.ubuntu.com:443 --recv-keys 2133BC600AB133E1D826D173FE43009C4607B1FB
 $ gpg --output gpg-keys/tor.gpg --export 2133BC600AB133E1D826D173FE43009C4607B1FB
 ```
 
@@ -28,7 +28,7 @@ sub   rsa4096 2016-09-23 [E] [expires: 2020-09-16]
 
 Generating `libevent.gpg`
 ```
-$ gpg --keyserver ha.pool.sks-keyservers.net --recv-keys 9E3AC83A27974B84D1B3401DB86086848EF8686D
+$ gpg --keyserver hkps://keyserver.ubuntu.com:443 --recv-keys 9E3AC83A27974B84D1B3401DB86086848EF8686D
 $ gpg --output gpg-keys/libevent.gpg --export 9E3AC83A27974B84D1B3401DB86086848EF8686D
 ```
 
