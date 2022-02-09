@@ -79,6 +79,7 @@ cd "x86_64/tor-$TOR_VERSION"
             --with-zlib-dir="$PWD/../zlib-$ZLIB_VERSION/root" \
             --disable-asciidoc \
             --disable-lzma \
+            --disable-zstd \
             ac_cv_func_getentropy=no \
             ac_cv_func_clock_gettime=no
 make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
