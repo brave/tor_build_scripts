@@ -1,0 +1,31 @@
+From 377863976656c34ea1305c1d985c8d50cc02bd76 Mon Sep 17 00:00:00 2001
+From: Wayback Archiver <66856220+waybackarchiver@users.noreply.github.com>
+Date: Fri, 19 Nov 2021 14:52:02 +0000
+Subject: [PATCH 1/2] Don't cleanup for docker images after build
+
+This reverts commit f85674db537d898b6e222c953e5daab807eff1b4.
+---
+ build_linux.sh | 2 --
+ build_mingw.sh | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/build_linux.sh b/build_linux.sh
+index e645fca..fa344cc 100755
+--- a/build_linux.sh
++++ b/build_linux.sh
+@@ -26,5 +26,3 @@ if ! ldd "tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION" 2>&1 \
+   printf >&2 'failed to make a statically linked tor executable'
+   exit 1
+ fi
+-
+-trap cleanup EXIT
+diff --git a/build_mingw.sh b/build_mingw.sh
+index 966c64f..308b6e5 100755
+--- a/build_mingw.sh
++++ b/build_mingw.sh
+@@ -20,5 +20,3 @@ docker build --no-cache -t tor-brave-mingw -f Dockerfile-mingw \
+     ${1+"$@"} .
+ docker run --rm --name tor-brave-mingw -d tor-brave-mingw
+ docker cp "tor-brave-mingw:/tor-$TOR_VERSION/install/bin/tor.exe" "tor-$TOR_VERSION-win32-brave-$BRAVE_TOR_VERSION.exe"
+-
+-trap cleanup EXIT
