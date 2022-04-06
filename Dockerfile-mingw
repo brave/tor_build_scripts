@@ -64,8 +64,8 @@ RUN \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} install
 
 RUN \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.torproject.org/dist/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz" -o tor-$tor_version.tar.gz && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.asc" -o tor-$tor_version.tar.gz.asc && \
   gpg --keyring /tor.gpg --verify tor-$tor_version.tar.gz.asc tor-$tor_version.tar.gz && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf tor-$tor_version.tar.gz && \
