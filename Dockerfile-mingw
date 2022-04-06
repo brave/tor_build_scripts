@@ -1,5 +1,4 @@
 FROM ubuntu:focal
-MAINTAINER Pranjal <pranjal@brave.com>
 
 ARG zlib_version
 ARG zlib_hash
