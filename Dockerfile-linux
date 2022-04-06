@@ -19,7 +19,7 @@ COPY gpg-keys/libevent.gpg /libevent.gpg
 
 RUN \
   apt-get update && \
-  apt-get install -y build-essential curl autotools-dev automake gnupg2
+  apt-get install -y build-essential curl autotools-dev automake gnupg
 
 RUN \ 
   curl -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o zlib-$zlib_version.tar.gz && \
