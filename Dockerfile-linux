@@ -71,6 +71,8 @@ RUN \
               --with-libevent-dir="$PWD/../libevent-$libevent_version/install" \
               --with-openssl-dir="$PWD/../openssl-$openssl_version/root" \
               --with-zlib-dir="$PWD/../zlib-$zlib_version/root" \
+              --disable-lzma \
+              --disable-zstd \
               --disable-asciidoc && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
