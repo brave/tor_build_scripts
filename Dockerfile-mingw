@@ -17,9 +17,10 @@ ARG jobs
 COPY gpg-keys/tor.gpg /tor.gpg
 COPY gpg-keys/libevent.gpg /libevent.gpg
 
-RUN apt-get update -qq && apt-get install -qq \
+RUN apt-get update -qq && apt-get install --no-install-recommends -qq \
   build-essential \
   curl \
+  ca-certificates \
   gnupg \
   mingw-w64 \
   ; # end of apt-get install

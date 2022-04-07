@@ -18,8 +18,8 @@ COPY gpg-keys/tor.gpg /tor.gpg
 COPY gpg-keys/libevent.gpg /libevent.gpg
 
 RUN \
-  apt-get update && \
-  apt-get install -y build-essential curl autotools-dev automake gnupg
+  apt-get update -qq && \
+  apt-get install --no-install-recommends -qq build-essential curl ca-certificates autotools-dev automake gnupg
 
 RUN \ 
   curl --proto '=https' --tlsv1.3 -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o zlib-$zlib_version.tar.gz && \
