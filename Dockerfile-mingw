@@ -70,8 +70,10 @@ RUN \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz" -o "tor-$tor_version.tar.gz" && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.asc" -o "tor-$tor_version.tar.gz.asc" && \
-  gpg --keyring /tor.gpg --verify "tor-$tor_version.tar.gz.asc" "tor-$tor_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.sha256sum" -o "tor-$tor_version.tar.gz.sha256sum" && \
+  sha256sum -c "tor-$tor_version.tar.gz.sha256sum" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.sha256sum.asc" -o "tor-$tor_version.tar.gz.sha256sum.asc" && \
+  gpg --keyring /tor.gpg --verify "tor-$tor_version.tar.gz.sha256sum.asc" "tor-$tor_version.tar.gz.sha256sum" && \
   echo "$tor_hash  tor-$tor_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf "tor-$tor_version.tar.gz" && \
   cd "tor-$tor_version" && \

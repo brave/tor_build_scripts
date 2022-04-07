@@ -6,27 +6,20 @@ GPG keyservers are known to be flaky so we include the keys in the repo:
 
 1. Tor:
 
-Generating `tor.gpg`
+Generating `tor.gpg`:
 ```
-$ gpg --keyserver hkps://keyserver.ubuntu.com:443 --recv-keys 2133BC600AB133E1D826D173FE43009C4607B1FB
-$ gpg --output gpg-keys/tor.gpg --export 2133BC600AB133E1D826D173FE43009C4607B1FB
+$ rm -f gpg-keys/tor.gpg
+$ touch gpg-keys/tor.gpg
+$ gpg --no-default-keyring --keyring gpg-keys/tor.gpg --keyserver hkps://keys.openpgp.org --recv-keys 514102454D0A87DB0767A1EBBE6A0531C18A9179
+$ gpg --no-default-keyring --keyring gpg-keys/tor.gpg --keyserver hkps://keys.openpgp.org --recv-keys B74417EDDF22AC9F9E90F49142E86A2A11F48D36
+$ gpg --no-default-keyring --keyring gpg-keys/tor.gpg --keyserver hkps://keys.openpgp.org --recv-keys 2133BC600AB133E1D826D173FE43009C4607B1FB
 ```
 
-```
-$ gpg --fingerprint 2133BC600AB133E1D826D173FE43009C4607B1FB
-pub   rsa4096 2016-09-21 [C] [expires: 2020-09-16]
-      2133 BC60 0AB1 33E1 D826  D173 FE43 009C 4607 B1FB
-uid           [ unknown] Nick Mathewson <nickm@alum.mit.edu>
-uid           [ unknown] Nick Mathewson <nickm@wangafu.net>
-uid           [ unknown] Nick Mathewson <nickm@freehaven.net>
-uid           [ unknown] Nick Mathewson <nickm@torproject.org>
-sub   rsa4096 2016-09-23 [S] [expires: 2020-09-16]
-sub   rsa4096 2016-09-23 [E] [expires: 2020-09-16]
-```
+The fingerprints should match those listed on https://support.torproject.org/little-t-tor/verify-little-t-tor/.
 
 2. Libevent:
 
-Generating `libevent.gpg`
+Generating `libevent.gpg`:
 ```
 $ gpg --keyserver hkps://keyserver.ubuntu.com:443 --recv-keys 9E3AC83A27974B84D1B3401DB86086848EF8686D
 $ gpg --output gpg-keys/libevent.gpg --export 9E3AC83A27974B84D1B3401DB86086848EF8686D
