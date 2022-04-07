@@ -1,1 +1,3 @@
 /gpg-keys/tor.gpg~
+/gnupg-*/
+/gnupg-*.tar.bz2
