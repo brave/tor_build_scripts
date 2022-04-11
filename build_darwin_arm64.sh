@@ -26,8 +26,8 @@ make ${jobs:+-j${jobs}} && make install
 cd ../../
 
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C arm64
-cp patch/openssl/10-main.conf "arm64/openssl-$OPENSSL_VERSION/Configurations/10-main.conf"
 cd "arm64/openssl-$OPENSSL_VERSION"
+patch -p0 < ../../patch/openssl/10-main.conf.patch
 ./Configure --prefix="$PWD/root" darwin64-arm64-cc no-shared no-dso
 make ${jobs:+-j${jobs}} && make install
 cd ../../

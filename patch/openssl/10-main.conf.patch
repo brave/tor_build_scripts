@@ -1,0 +1,20 @@
+Description: Support building OpenSSL for arm64 on macOS
+Origin: https://github.com/brave/tor_build_scripts/pull/55
+Bug-Brave: https://github.com/brave/tor_build_scripts/issues/54
+Last-Update: 2022-04-11
+
+--- Configurations/10-main.conf	2022-03-15 07:37:47.000000000 -0700
++++ Configurations/10-main.conf.brave	2022-04-11 14:58:18.997544734 -0700
+@@ -1575,10 +1575,10 @@
+     "darwin64-arm64-cc" => {
+         inherit_from     => [ "darwin-common", asm("aarch64_asm") ],
+         CFLAGS           => add("-Wall"),
+-        cflags           => add("-arch arm64"),
++        cflags           => add("-arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"),
+         lib_cppflags     => add("-DL_ENDIAN"),
+         bn_ops           => "SIXTY_FOUR_BIT_LONG",
+-        perlasm_scheme   => "ios64",
++        perlasm_scheme   => "macosx",
+     },
+ 
+ ##### GNU Hurd
