@@ -9,7 +9,7 @@ XCODE_INCLUDE="$SDK_PATH/usr/include/"
 
 if [ $# -eq 1 ]; then
   re='^[0-9]+$'
-  if  echo "$1" | grep -Eq "$re" ; then
+  if ! echo "$1" | grep -Eq "$re" ; then
     echo "Invalid number of cores" >&2; exit 1
   fi
   jobs=$1
