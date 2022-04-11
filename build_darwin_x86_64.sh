@@ -35,10 +35,9 @@ cd ../../
 #they forgot to decorate them with appropriate AVAILABLE_MAC_OS_VERSION checks. 
 #So we have to explicitly disable them for binaries to work on MacOS 10.11.
 
-# Updated test/regress_bufferevent.c disables: test_bufferevent_pair_release_lock
-
 tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C x86_64
 cd "x86_64/libevent-$LIBEVENT_VERSION"
+patch -p0 < ../../patch/libevent/regress.c.patch
 ./configure \
             LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib" \
             CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \

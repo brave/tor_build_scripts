@@ -36,12 +36,9 @@ cd ../../
 #they forgot to decorate them with appropriate AVAILABLE_MAC_OS_VERSION checks. 
 #So we have to explicitly disable them for binaries to work on MacOS 10.11.
 
-# Using test/regress.c from a local repo because make check hangs in libevent
-# See: https://github.com/libevent/libevent/issues/747 for more details
-# Updated test/regress_bufferevent.c disables: test_bufferevent_pair_release_lock
-
 tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C arm64
 cd "arm64/libevent-$LIBEVENT_VERSION"
+patch -p0 < ../../patch/libevent/regress.c.patch
 ./configure \
 	    LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib --target=arm64-apple-macos11" \
 	    CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include --target=arm64-apple-macos11" \
