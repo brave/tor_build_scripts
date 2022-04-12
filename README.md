@@ -57,3 +57,4 @@ In case of updates for `tor` | `libevent` | `zlib` | `openssl`
      (Otherwise we are subject to version rollback attacks.)
 6. Update the hash in env.sh.
 7. Attempt a build.  It should pass.
+8. To test building on other platforms, build the *brave-tor-client-build* project in Jenkins using your branch instead of `master`.
