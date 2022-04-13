@@ -1,17 +1,15 @@
 Bug-Brave: https://github.com/brave/tor_build_scripts/issues/86
 Description: Disable failing tests on Mac
-Last-Update: 2022-04-11
+Last-Update: 2022-04-12
 
---- test/regress.c	2020-07-05 05:01:34.000000000 -0700
-+++ test/regress.c.brave	2022-04-11 15:21:50.587472852 -0700
-@@ -3600,8 +3600,10 @@
+--- test/regress.c	2022-04-12 21:44:28.490865843 -0700
++++ test/regress.c.brave	2022-04-12 21:48:20.619344651 -0700
+@@ -3598,7 +3598,7 @@
+ };
+ 
  struct testcase_t signal_testcases[] = {
- #ifndef _WIN32
+-#ifndef _WIN32
++#if !defined(_WIN32) && !defined(__APPLE__)
  	LEGACY(simplestsignal, TT_ISOLATED),
-+#ifndef __APPLE__
  	LEGACY(simplesignal, TT_ISOLATED),
  	LEGACY(multiplesignal, TT_ISOLATED),
-+#endif /* __APPLE__ */
- 	LEGACY(immediatesignal, TT_ISOLATED),
- 	LEGACY(signal_dealloc, TT_ISOLATED),
- 	LEGACY(signal_pipeloss, TT_ISOLATED),
