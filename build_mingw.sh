@@ -20,5 +20,3 @@ docker build --no-cache -t tor-brave-mingw -f Dockerfile-mingw \
     ${1+"$@"} .
 docker run --rm --name tor-brave-mingw -d tor-brave-mingw
 docker cp "tor-brave-mingw:/tor-$TOR_VERSION/install/bin/tor.exe" "tor-$TOR_VERSION-win32-brave-$BRAVE_TOR_VERSION.exe"
-
-trap cleanup EXIT

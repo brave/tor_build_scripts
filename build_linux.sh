@@ -26,5 +26,3 @@ if ! ldd "tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION" 2>&1 \
   printf >&2 'failed to make a statically linked tor executable'
   exit 1
 fi
-
-trap cleanup EXIT
