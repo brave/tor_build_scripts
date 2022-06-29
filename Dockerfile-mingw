@@ -82,7 +82,9 @@ RUN \
               --with-openssl-dir="$PWD/../openssl-$openssl_version/root" \
               --with-zlib-dir="$PWD/../zlib-$zlib_version/install" \
               --disable-asciidoc \
+              --disable-html-manual \
               --disable-lzma \
+              --disable-manpage \
               --disable-zstd \
               --host=i686-w64-mingw32 \
               LIBS=-lcrypt32 && \

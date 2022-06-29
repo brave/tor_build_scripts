@@ -70,9 +70,11 @@ RUN \
               --with-libevent-dir="$PWD/../libevent-$libevent_version/install" \
               --with-openssl-dir="$PWD/../openssl-$openssl_version/root" \
               --with-zlib-dir="$PWD/../zlib-$zlib_version/root" \
+              --disable-asciidoc \
+              --disable-html-manual \
               --disable-lzma \
-              --disable-zstd \
-              --disable-asciidoc && \
+              --disable-manpage \
+              --disable-zstd && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
 ENTRYPOINT ["sh", "-c", "while true; do sleep 2; done"]
