@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:jammy
 
 ARG zlib_version
 ARG zlib_hash
@@ -60,7 +60,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \  
   curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz" -o "tor-$tor_version.tar.gz" && \
   curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.sha256sum.asc" -o "tor-$tor_version.tar.gz.sha256sum.asc" && \
-  echo "$tor_hash tor-$tor_version.tar.gz" > "tor-$tor_version.tar.gz.sha256sum" && \
+  echo "$tor_hash  tor-$tor_version.tar.gz" > "tor-$tor_version.tar.gz.sha256sum" && \
   gpg --keyring /tor.gpg --verify "tor-$tor_version.tar.gz.sha256sum.asc" "tor-$tor_version.tar.gz.sha256sum" && \
   sha256sum -c "tor-$tor_version.tar.gz.sha256sum" && \
   tar -xvzf "tor-$tor_version.tar.gz" && \
@@ -70,9 +70,11 @@ RUN \
               --with-libevent-dir="$PWD/../libevent-$libevent_version/install" \
               --with-openssl-dir="$PWD/../openssl-$openssl_version/root" \
               --with-zlib-dir="$PWD/../zlib-$zlib_version/root" \
+              --disable-asciidoc \
+              --disable-html-manual \
               --disable-lzma \
-              --disable-zstd \
-              --disable-asciidoc && \
+              --disable-manpage \
+              --disable-zstd && \
   make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} check && make install
 
 ENTRYPOINT ["sh", "-c", "while true; do sleep 2; done"]

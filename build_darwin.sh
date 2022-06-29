@@ -15,10 +15,8 @@ echo "$LIBEVENT_HASH  libevent-$LIBEVENT_VERSION.tar.gz" | shasum -a 256 -c -
 
 curl --proto '=https' --tlsv1.2 -fsSL "https://dist.torproject.org/tor-$TOR_VERSION.tar.gz" -o "tor-$TOR_VERSION.tar.gz"
 curl --proto '=https' --tlsv1.2 -fsSL "https://dist.torproject.org/tor-$TOR_VERSION.tar.gz.sha256sum.asc" -o "tor-$TOR_VERSION.tar.gz.sha256sum.asc"
-echo "$TOR_HASH tor-$TOR_VERSION.tar.gz" > "tor-$TOR_VERSION.tar.gz.sha256sum"
+echo "$TOR_HASH  tor-$TOR_VERSION.tar.gz" > "tor-$TOR_VERSION.tar.gz.sha256sum"
 gpg --keyring gpg-keys/tor.gpg --verify "tor-$TOR_VERSION.tar.gz.sha256sum.asc" "tor-$TOR_VERSION.tar.gz.sha256sum"
-# shasum (unlike recent versions of sha256sum) needs two spaces between file and hash.
-perl -pi -e 's/ /  /' "tor-$TOR_VERSION.tar.gz.sha256sum"
 shasum -a 256 -c "tor-$TOR_VERSION.tar.gz.sha256sum"
 
 if [ "$(uname)" = 'Linux' ]

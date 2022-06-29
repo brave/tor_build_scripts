@@ -63,7 +63,9 @@ cd "arm64/tor-$TOR_VERSION"
 	    --with-openssl-dir="$PWD/../openssl-$OPENSSL_VERSION/root" \
 	    --with-zlib-dir="$PWD/../zlib-$ZLIB_VERSION/root" \
 	    --disable-asciidoc \
+	    --disable-html-manual \
 	    --disable-lzma \
+	    --disable-manpage \
             --disable-zstd \
             --host=arm-apple-darwin \
             --disable-tool-name-check \
