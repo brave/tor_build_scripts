@@ -62,7 +62,7 @@ In case of updates for `tor` | `libevent` | `zlib` | `openssl`
 10. Download each binary and run `sha512sum` on them. Make sure you use the **post-signing** Windows binary since both signed and unsigned will be in the output.
 11. Merge your `brave/tor_build_scripts` PR once it's been reviewed.
 12. Prepare a PR for the `brave/brave-core-crx-packager` repo bumping the version numbers and hashes (e.g. brave/brave-core-crx-packager#390).
-13. Build a new version of the component on **dev** by building the *brave-core-ext-tor-client-update-dev* project in Jenkins using your branch (in the `brave/brave-core-crx-packager` repo) instead of `master`.
+13. Build a new version of the component on **dev** by building the *brave-core-ext-tor-client-update-publish-dev* project in Jenkins using your branch (in the `brave/brave-core-crx-packager` repo) instead of `master`.
 14. Ask QA to create a milestone like https://github.com/brave/brave-browser/milestone/281 and do a manual test pass on each platform with the dev builds.
 15. Merge the `brave/brave-core-crx-packager` PR once it's been reviewed and QA has approved.
 16. Build a new version of the component on **prod** by building the *brave-core-ext-tor-client-update* project in Jenkins using the `master` branch.
