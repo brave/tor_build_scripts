@@ -45,7 +45,7 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            branch('linh-add-tor-client-build-ci')
+                                            branch('master')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/extensions/dev/brave-tor-client-build-pr-test.Jenkinsfile")
