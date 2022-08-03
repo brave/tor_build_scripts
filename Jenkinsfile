@@ -2,7 +2,7 @@ pipeline {
     agent none
     options {
         ansiColor('xterm')
-        timeout(time: 10, unit: 'MINUTES')
+        timeout(time: 1, unit: 'HOURS')
         timestamps()
     }
     stages {
