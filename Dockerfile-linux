@@ -16,6 +16,7 @@ ARG jobs
 
 COPY gpg-keys/tor.gpg /tor.gpg
 COPY gpg-keys/libevent.gpg /libevent.gpg
+COPY patch /patch
 
 RUN \
   apt-get update -qq && \
@@ -47,6 +48,7 @@ RUN \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf "libevent-$libevent_version.tar.gz" && \
   cd "libevent-$libevent_version" && \
+  patch -p0 < /patch/libevent/regress_dns.c.patch && \
   ./configure \
               --disable-openssl \
               --prefix="$PWD/install" \
