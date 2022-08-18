@@ -66,6 +66,6 @@ In case of updates for `tor` | `libevent` | `zlib` | `openssl`
 14. Once the build has finished, check that the correct version of the tor daemon is downloaded when running `brave-browser --use-dev-goupdater-url` (check the terminal log messages).
 15. Ask QA to create a milestone like https://github.com/brave/brave-browser/milestone/281 and do a manual test pass on each platform with the dev builds.
 16. Merge the `brave/brave-core-crx-packager` PR once it's been reviewed and QA has approved.
-17. Build a new version of the component on **prod** by building the *brave-core-ext-tor-client-update* project in Jenkins using the `master` branch.
+17. Build a new version of the component on **prod** by building the *brave-core-ext-tor-client-update-publish* project in Jenkins using the `master` branch.
 18. Update to the latest version of the *Brave Tor Client Updater* component in your browser by triggering an update in `brave://components` and test that https://brave4u7jddbv7cyviptqjc7jusxh72uik7zt6adtckl5f4nwy2v72qd.onion/index.html loads fine.
 19. Ask QA to repeat this test on all platforms.
