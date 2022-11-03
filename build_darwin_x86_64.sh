@@ -27,7 +27,6 @@ cd ../../
 
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C x86_64
 cd "x86_64/openssl-$OPENSSL_VERSION"
-patch -p0 < ../../patch/openssl/v3ext.c.patch
 ./Configure --prefix="$PWD/root" darwin64-x86_64-cc no-shared no-dso
 make ${jobs:+-j${jobs}} && make test && make install
 cd ../../
