@@ -16,6 +16,7 @@ ARG jobs
 
 COPY gpg-keys/tor.gpg /tor.gpg
 COPY gpg-keys/libevent.gpg /libevent.gpg
+COPY gpg-keys/openssl.gpg /openssl.gpg
 
 RUN apt-get update -qq && apt-get install --no-install-recommends -qq \
   build-essential \
@@ -43,6 +44,8 @@ RUN \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
+  gpg --keyring /openssl.gpg --verify "openssl-$openssl_version.tar.gz.asc" "openssl-$openssl_version.tar.gz" && \
   echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf "openssl-$openssl_version.tar.gz" && \
   cd "openssl-$openssl_version" && \
