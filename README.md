@@ -35,6 +35,21 @@ uid           [ unknown] Azat Khuzhin <azat@libevent.org>
 sub   rsa2048 2010-06-10 [E]
 ```
 
+3. OpenSSL
+
+Generating `openssl.gpg`:
+```
+$ gpg --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key 8657ABB260F056B1E5190839D9C4D26D0E604491
+$ gpg --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key B7C1C14360F353A36862E4D5231C84CDDCC69C45
+$ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key 5B2545DAB21995F4088CEFAA36CEE4DEB00CFE33
+$ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key C1F33DD8CE1D4CC613AF14DA9195C48241FBF7DD
+$ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key 7953AC1FBC3DC8B3B292393ED5E9E43F7DF9EE8C
+$ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key E5E52560DD91C556DDBDA5D02064C53641C25E5D
+$ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key DC7032662AF885E2F47F243F527466A21CA79E6D
+```
+
+The keys are listed on https://www.openssl.org/community/omc.html.
+
 ### Generating binaries
 
 1. Increment the Brave version number for each published build.
