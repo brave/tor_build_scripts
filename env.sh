@@ -2,7 +2,9 @@
 
 export MACOSX_DEPLOYMENT_TARGET=10.10
 
+# Reset version number to zero everytime TOR_VERSION changes.
 export BRAVE_TOR_VERSION="0"
+
 export TOR_VERSION="0.4.7.11"
 
 export ZLIB_VERSION="1.2.13"
