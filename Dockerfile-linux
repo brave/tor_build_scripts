@@ -21,7 +21,7 @@ COPY patch /patch
 
 RUN \
   apt-get update -qq && \
-  apt-get install --no-install-recommends -qq build-essential curl ca-certificates autotools-dev automake gnupg
+  apt-get install --no-install-recommends -qq build-essential curl ca-certificates autotools-dev automake gnupg python-is-python3
 
 # Download and verify all tarballs
 
