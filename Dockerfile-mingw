@@ -66,8 +66,8 @@ RUN \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "zlib-$zlib_version" && \
-  make ${jobs:+-j$jobs} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- && \
-  make ${jobs:+-j$jobs} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- \
+  make ${jobs:+-j${jobs}} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- && \
+  make ${jobs:+-j${jobs}} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- \
     BINARY_PATH="$PWD/install/bin" \
     INCLUDE_PATH="$PWD/install/include" \
     LIBRARY_PATH="$PWD/install/lib" \
@@ -78,24 +78,27 @@ RUN \
   cd "openssl-$openssl_version" && \
   ./Configure --prefix="$PWD/root"  --cross-compile-prefix=i686-w64-mingw32- \
     mingw no-shared no-dso && \
-  make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} install_sw
+  make ${jobs:+-j${jobs}} && \
+  make install_sw
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "libevent-$libevent_version" && \
   ./configure \
+              --host=i686-w64-mingw32 \
               --disable-openssl \
               --prefix="$PWD/install" \
               --disable-shared \
               --enable-static \
-              --with-pic \
-              --host=i686-w64-mingw32 && \
-  make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} install
+              --with-pic && \
+  make ${jobs:+-j${jobs}} && \
+  make install
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "tor-$tor_version" && \
   ./configure --prefix="$PWD/install" \
+              --host=i686-w64-mingw32 \
               --enable-static-tor \
               --with-libevent-dir="$PWD/../libevent-$libevent_version/install" \
               --with-openssl-dir="$PWD/../openssl-$openssl_version/root" \
@@ -105,8 +108,8 @@ RUN \
               --disable-lzma \
               --disable-manpage \
               --disable-zstd \
-              --host=i686-w64-mingw32 \
               LIBS=-lcrypt32 && \
-  make ${jobs:+-j$jobs} && make ${jobs:+-j$jobs} install
+  make ${jobs:+-j${jobs}} && \
+  make install
 
 ENTRYPOINT ["sh", "-c", "while true; do sleep 2; done"]
