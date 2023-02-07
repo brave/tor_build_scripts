@@ -28,11 +28,43 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq \
 
 ENV PATH="/usr/i686-w64-mingw32/bin:$PATH"
 
+# Download and verify all tarballs
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o "zlib-$zlib_version.tar.gz" && \
   echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
-  tar -zxvf "zlib-$zlib_version.tar.gz" && \
+  tar -zxvf "zlib-$zlib_version.tar.gz"
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
+  gpg --keyring /openssl.gpg --verify "openssl-$openssl_version.tar.gz.asc" "openssl-$openssl_version.tar.gz" && \
+  echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
+  tar -xvzf "openssl-$openssl_version.tar.gz"
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o "libevent-$libevent_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o "libevent-$libevent_version.tar.gz.asc" && \
+  gpg --keyring /libevent.gpg --verify "libevent-$libevent_version.tar.gz.asc" "libevent-$libevent_version.tar.gz" && \
+  echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
+  tar -zxvf "libevent-$libevent_version.tar.gz"
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz" -o "tor-$tor_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.sha256sum.asc" -o "tor-$tor_version.tar.gz.sha256sum.asc" && \
+  echo "$tor_hash  tor-$tor_version.tar.gz" > "tor-$tor_version.tar.gz.sha256sum" && \
+  gpg --keyring /tor.gpg --verify "tor-$tor_version.tar.gz.sha256sum.asc" "tor-$tor_version.tar.gz.sha256sum" && \
+  sha256sum -c "tor-$tor_version.tar.gz.sha256sum" && \
+  tar -xvzf "tor-$tor_version.tar.gz"
+
+# Configure and compile everything
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN \
   cd "zlib-$zlib_version" && \
   make ${jobs:+-j$jobs} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- && \
   make ${jobs:+-j$jobs} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- \
@@ -43,11 +75,6 @@ RUN \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
-  gpg --keyring /openssl.gpg --verify "openssl-$openssl_version.tar.gz.asc" "openssl-$openssl_version.tar.gz" && \
-  echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
-  tar -xvzf "openssl-$openssl_version.tar.gz" && \
   cd "openssl-$openssl_version" && \
   ./Configure --prefix="$PWD/root"  --cross-compile-prefix=i686-w64-mingw32- \
     mingw no-shared no-dso && \
@@ -55,11 +82,6 @@ RUN \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o "libevent-$libevent_version.tar.gz" && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o "libevent-$libevent_version.tar.gz.asc" && \
-  gpg --keyring /libevent.gpg --verify "libevent-$libevent_version.tar.gz.asc" "libevent-$libevent_version.tar.gz" && \
-  echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
-  tar -zxvf "libevent-$libevent_version.tar.gz" && \
   cd "libevent-$libevent_version" && \
   ./configure \
               --disable-openssl \
@@ -72,12 +94,6 @@ RUN \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz" -o "tor-$tor_version.tar.gz" && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.sha256sum.asc" -o "tor-$tor_version.tar.gz.sha256sum.asc" && \
-  echo "$tor_hash  tor-$tor_version.tar.gz" > "tor-$tor_version.tar.gz.sha256sum" && \
-  gpg --keyring /tor.gpg --verify "tor-$tor_version.tar.gz.sha256sum.asc" "tor-$tor_version.tar.gz.sha256sum" && \
-  sha256sum -c "tor-$tor_version.tar.gz.sha256sum" && \
-  tar -xvzf "tor-$tor_version.tar.gz" && \
   cd "tor-$tor_version" && \
   ./configure --prefix="$PWD/install" \
               --enable-static-tor \
