@@ -67,7 +67,7 @@ RUN \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "zlib-$zlib_version" && \
-  ./configure --prefix="$PWD/root" && \
+  ./configure --prefix="$PWD/root" --static && \
   make ${jobs:+-j${jobs}} && \
   make ${jobs:+-j${jobs}} check && \
   make install
