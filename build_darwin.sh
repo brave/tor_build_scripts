@@ -2,6 +2,8 @@
 
 # Download and verify dependencies
 curl --proto '=https' --tlsv1.2 -fsSL "https://zlib.net/zlib-$ZLIB_VERSION.tar.gz" -o "zlib-$ZLIB_VERSION.tar.gz"
+curl --proto '=https' --tlsv1.2 -fsSL "https://zlib.net/zlib-$ZLIB_VERSION.tar.gz.asc" -o "zlib-$ZLIB_VERSION.tar.gz.asc"
+gpg --keyring gpg-keys/zlib.gpg --verify "zlib-$ZLIB_VERSION.tar.gz.asc" "zlib-$ZLIB_VERSION.tar.gz"
 echo "$ZLIB_HASH  zlib-$ZLIB_VERSION.tar.gz" | shasum -a 256 -c -
 
 curl --proto '=https' --tlsv1.2 -fsSL "https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz" -o "openssl-$OPENSSL_VERSION.tar.gz"

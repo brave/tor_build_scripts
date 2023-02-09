@@ -35,6 +35,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o "zlib-$zlib_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz.asc" -o "zlib-$zlib_version.tar.gz.asc" && \
+  gpg --keyring /zlib.gpg --verify "zlib-$zlib_version.tar.gz.asc" "zlib-$zlib_version.tar.gz" && \
   echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf "zlib-$zlib_version.tar.gz"
 
