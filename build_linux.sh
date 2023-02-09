@@ -1,14 +1,17 @@
 #!/bin/sh
 set -eu
 
+IMAGE_NAME="tor-brave"
+DOCKERFILE="Dockerfile-linux"
+
 cleanup () {
   echo "cleaning up docker containers/images"
-  docker rm -f tor-brave || true
-  docker rmi tor-brave || true
+  docker rm -f $IMAGE_NAME || true
+  docker rmi $IMAGE_NAME || true
 }
 
 cleanup
-docker build --no-cache -t tor-brave -f Dockerfile-linux \
+docker build --no-cache -t $IMAGE_NAME -f $DOCKERFILE \
     --build-arg "tor_version=$TOR_VERSION" \
     --build-arg "zlib_version=$ZLIB_VERSION" \
     --build-arg "libevent_version=$LIBEVENT_VERSION" \
@@ -18,8 +21,8 @@ docker build --no-cache -t tor-brave -f Dockerfile-linux \
     --build-arg "openssl_hash=$OPENSSL_HASH" \
     --build-arg "tor_hash=$TOR_HASH" \
     ${1+"$@"} .
-docker run --rm --name tor-brave -d tor-brave
-docker cp "tor-brave:/tor-$TOR_VERSION/install/bin/tor" "tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION"
+docker run --rm --name $IMAGE_NAME -d $IMAGE_NAME
+docker cp "$IMAGE_NAME:/tor-$TOR_VERSION/install/bin/tor" "tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION"
 
 if ! ldd "tor-$TOR_VERSION-linux-brave-$BRAVE_TOR_VERSION" 2>&1 \
        | grep -E -q 'not a dynamic executable'; then
