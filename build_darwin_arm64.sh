@@ -1,5 +1,4 @@
-#!/bin/sh
-set -eu
+#!/bin/sh -eu
 
 echo "running build_darwin_arm64.sh..."
 
@@ -67,6 +66,8 @@ cd "arm64/tor-$TOR_VERSION"
 	    --disable-lzma \
 	    --disable-manpage \
             --disable-zstd \
+            --disable-module-relay \
+            --disable-module-dirauth \
             --host=arm-apple-darwin \
             --disable-tool-name-check \
 	    ac_cv_func_getentropy=no \

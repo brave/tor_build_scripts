@@ -20,16 +20,17 @@ COPY patch /patch
 RUN \
   DEBIAN_FRONTEND=noninteractive \
   apt-get update -qq && apt-get install --no-install-recommends -qq \
+  binutils-aarch64-linux-gnu \
   build-essential \
   curl \
   ca-certificates \
+  gcc-aarch64-linux-gnu \
   gnupg \
-  mingw-w64 \
+  libc6-dev-arm64-cross \
+  python-is-python3 \
   ; # end of apt-get install
 
-ENV PATH="/usr/i686-w64-mingw32/bin:$PATH"
-
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-e", "-o", "pipefail", "-c"]
 
 # Download and verify all tarballs
 
@@ -66,18 +67,16 @@ RUN \
 
 RUN \
   cd "zlib-$zlib_version" && \
-  make ${jobs:+-j${jobs}} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- && \
-  make ${jobs:+-j${jobs}} -f win32/Makefile.gcc PREFIX=i686-w64-mingw32- \
-    BINARY_PATH="$PWD/install/bin" \
-    INCLUDE_PATH="$PWD/install/include" \
-    LIBRARY_PATH="$PWD/install/lib" \
-    install
+  CC=aarch64-linux-gnu-gcc \
+  ./configure --prefix="$PWD/root" --static && \
+  make ${jobs:+-j${jobs}} && \
+  make install
 
 RUN \
   cd "openssl-$openssl_version" && \
   ./Configure --prefix="$PWD/root" \
-    --cross-compile-prefix=i686-w64-mingw32- \
-    mingw \
+    --cross-compile-prefix=aarch64-linux-gnu- \
+    linux-aarch64 \
     no-shared no-dso && \
   make ${jobs:+-j${jobs}} && \
   make install_sw
@@ -85,23 +84,24 @@ RUN \
 RUN \
   cd "libevent-$libevent_version" && \
   ./configure \
-              --host=i686-w64-mingw32 \
+              --host=aarch64-linux-gnu \
               --disable-openssl \
               --prefix="$PWD/install" \
               --disable-shared \
               --enable-static \
               --with-pic && \
+              CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ && \
   make ${jobs:+-j${jobs}} && \
   make install
 
 RUN \
   cd "tor-$tor_version" && \
   ./configure --prefix="$PWD/install" \
-              --host=i686-w64-mingw32 \
+              --host=aarch64-linux-gnu \
               --enable-static-tor \
               --with-libevent-dir="$PWD/../libevent-$libevent_version/install" \
               --with-openssl-dir="$PWD/../openssl-$openssl_version/root" \
-              --with-zlib-dir="$PWD/../zlib-$zlib_version/install" \
+              --with-zlib-dir="$PWD/../zlib-$zlib_version/root" \
               --disable-asciidoc \
               --disable-html-manual \
               --disable-lzma \
@@ -109,7 +109,7 @@ RUN \
               --disable-zstd \
               --disable-module-relay \
               --disable-module-dirauth \
-              LIBS=-lcrypt32 && \
+              CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ && \
   make ${jobs:+-j${jobs}} && \
   make install
 

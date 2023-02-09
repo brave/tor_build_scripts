@@ -1,14 +1,16 @@
-#!/bin/sh
-set -eu
+#!/bin/sh -eu
+
+IMAGE_NAME="tor-brave-mingw"
+DOCKERFILE="Dockerfile-mingw"
 
 cleanup () {
   echo "cleaning up docker containers/images"
-  docker rm -f tor-brave-mingw || true
-  docker rmi tor-brave-mingw || true
+  docker rm -f "$IMAGE_NAME" || true
+  docker rmi -f "$IMAGE_NAME" || true
 }
 
 cleanup
-docker build --no-cache -t tor-brave-mingw -f Dockerfile-mingw \
+docker build --no-cache -t "$IMAGE_NAME" -f "$DOCKERFILE" \
     --build-arg "tor_version=$TOR_VERSION" \
     --build-arg "zlib_version=$ZLIB_VERSION" \
     --build-arg "libevent_version=$LIBEVENT_VERSION" \
@@ -18,5 +20,5 @@ docker build --no-cache -t tor-brave-mingw -f Dockerfile-mingw \
     --build-arg "openssl_hash=$OPENSSL_HASH" \
     --build-arg "tor_hash=$TOR_HASH" \
     ${1+"$@"} .
-docker run --rm --name tor-brave-mingw -d tor-brave-mingw
-docker cp "tor-brave-mingw:/tor-$TOR_VERSION/install/bin/tor.exe" "tor-$TOR_VERSION-win32-brave-$BRAVE_TOR_VERSION.exe"
+docker run --init --rm --name "$IMAGE_NAME" -d "$IMAGE_NAME"
+docker cp "$IMAGE_NAME:/tor-$TOR_VERSION/install/bin/tor.exe" "tor-$TOR_VERSION-win32-brave-$BRAVE_TOR_VERSION.exe"
