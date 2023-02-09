@@ -76,8 +76,10 @@ RUN \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "openssl-$openssl_version" && \
-  ./Configure --prefix="$PWD/root"  --cross-compile-prefix=i686-w64-mingw32- \
-    mingw no-shared no-dso && \
+  ./Configure --prefix="$PWD/root" \
+    --cross-compile-prefix=i686-w64-mingw32- \
+    mingw \
+    no-shared no-dso && \
   make ${jobs:+-j${jobs}} && \
   make install_sw
 

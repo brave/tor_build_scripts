@@ -75,7 +75,8 @@ RUN \
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "openssl-$openssl_version" && \
-  ./config --prefix="$PWD/root" no-shared no-dso && \
+  ./config --prefix="$PWD/root" \
+    no-shared no-dso && \
   make ${jobs:+-j${jobs}} && \
   make test && \
   make install
@@ -107,7 +108,8 @@ RUN \
               --disable-html-manual \
               --disable-lzma \
               --disable-manpage \
-              --disable-zstd && \
+              --disable-zstd \
+              && \
   make ${jobs:+-j${jobs}} && \
   make ${jobs:+-j${jobs}} check && \
   make install
