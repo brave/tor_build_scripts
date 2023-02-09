@@ -1,5 +1,4 @@
-#!/bin/sh
-set -eu
+#!/bin/sh -eu
 
 # Download and verify dependencies
 curl --proto '=https' --tlsv1.2 -fsSL "https://zlib.net/zlib-$ZLIB_VERSION.tar.gz" -o "zlib-$ZLIB_VERSION.tar.gz"

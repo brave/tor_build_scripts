@@ -1,5 +1,4 @@
-#!/bin/sh
-set -eu
+#!/bin/sh -eu
 
 echo "running build_darwin_arm64.sh..."
 

@@ -14,12 +14,12 @@ ARG tor_hash
 
 ARG jobs
 
-COPY gpg-keys/tor.gpg /tor.gpg
-COPY gpg-keys/libevent.gpg /libevent.gpg
-COPY gpg-keys/openssl.gpg /openssl.gpg
+COPY gpg-keys/* /
 COPY patch /patch
 
-RUN apt-get update -qq && apt-get install --no-install-recommends -qq \
+RUN \
+  DEBIAN_FRONTEND=noninteractive \
+  apt-get update -qq && apt-get install --no-install-recommends -qq \
   automake \
   autotools-dev \
   build-essential \
@@ -29,15 +29,15 @@ RUN apt-get update -qq && apt-get install --no-install-recommends -qq \
   python-is-python3 \
   ; # end of apt-get install
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Download and verify all tarballs
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://zlib.net/zlib-${zlib_version}.tar.gz" -o "zlib-$zlib_version.tar.gz" && \
   echo "$zlib_hash  zlib-$zlib_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf "zlib-$zlib_version.tar.gz"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
   curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
@@ -45,7 +45,6 @@ RUN \
   echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf "openssl-$openssl_version.tar.gz"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz" -o "libevent-$libevent_version.tar.gz" && \
   curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/libevent/libevent/releases/download/release-$libevent_version/libevent-$libevent_version.tar.gz.asc" -o "libevent-$libevent_version.tar.gz.asc" && \
@@ -53,7 +52,6 @@ RUN \
   echo "$libevent_hash  libevent-$libevent_version.tar.gz" | shasum -a 256 -c - && \
   tar -zxvf "libevent-$libevent_version.tar.gz"
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz" -o "tor-$tor_version.tar.gz" && \
   curl --proto '=https' --tlsv1.3 -fsSL "https://dist.torproject.org/tor-$tor_version.tar.gz.sha256sum.asc" -o "tor-$tor_version.tar.gz.sha256sum.asc" && \
@@ -64,7 +62,6 @@ RUN \
 
 # Configure and compile everything
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "zlib-$zlib_version" && \
   ./configure --prefix="$PWD/root" --static && \
@@ -72,7 +69,6 @@ RUN \
   make ${jobs:+-j${jobs}} check && \
   make install
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "openssl-$openssl_version" && \
   ./config --prefix="$PWD/root" \
@@ -81,7 +77,6 @@ RUN \
   make test && \
   make install
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "libevent-$libevent_version" && \
   patch -p0 < /patch/libevent/regress_dns.c.patch && \
@@ -96,7 +91,6 @@ RUN \
   make ${jobs:+-j${jobs}} check && \
   make install
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
   cd "tor-$tor_version" && \
   ./configure --prefix="$PWD/install" \
