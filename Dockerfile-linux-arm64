@@ -111,6 +111,8 @@ RUN \
               --disable-lzma \
               --disable-manpage \
               --disable-zstd \
+              --disable-module-relay \
+              --disable-module-dirauth \
               CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ && \
   make ${jobs:+-j${jobs}} && \
   make install

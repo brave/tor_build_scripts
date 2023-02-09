@@ -110,6 +110,8 @@ RUN \
               --disable-lzma \
               --disable-manpage \
               --disable-zstd \
+              --disable-module-relay \
+              --disable-module-dirauth \
               LIBS=-lcrypt32 && \
   make ${jobs:+-j${jobs}} && \
   make install

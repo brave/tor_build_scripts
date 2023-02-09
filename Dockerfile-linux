@@ -109,6 +109,8 @@ RUN \
               --disable-lzma \
               --disable-manpage \
               --disable-zstd \
+              --disable-module-relay \
+              --disable-module-dirauth \
               && \
   make ${jobs:+-j${jobs}} && \
   make ${jobs:+-j${jobs}} check && \
