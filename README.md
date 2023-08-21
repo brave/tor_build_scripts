@@ -46,6 +46,7 @@ $ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg
 $ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key 7953AC1FBC3DC8B3B292393ED5E9E43F7DF9EE8C
 $ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key E5E52560DD91C556DDBDA5D02064C53641C25E5D
 $ gpg --keyserver hkps://keyserver.ubuntu.com --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key DC7032662AF885E2F47F243F527466A21CA79E6D
+$ gpg --keyserver hkps://keys.openpgp.org --no-default-keyring --keyring gpg-keys/openssl.gpg --recv-key EFC0A467D613CB83C7ED6D30D894E2CE8B3D79F5
 ```
 
 The keys are listed on https://www.openssl.org/community/omc.html.
