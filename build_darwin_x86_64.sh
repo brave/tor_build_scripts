@@ -41,6 +41,7 @@ patch -p0 < ../../patch/libevent/regress.c.patch
             LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib" \
             CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \
             --prefix="$PWD/install" \
+            --disable-openssl \
             --disable-shared \
             --enable-static \
             --disable-clock-gettime \
