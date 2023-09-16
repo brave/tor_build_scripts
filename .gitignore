@@ -1,3 +1,4 @@
+/build/
 /gpg-keys/*.gpg~
 /gnupg-*/
 /gnupg-*.tar.bz2
