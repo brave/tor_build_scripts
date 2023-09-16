@@ -74,7 +74,7 @@ In case of updates for `tor` | `libevent` | `zlib` | `openssl`
 6. Update the hash in env.sh.
 7. Attempt a build.  It should pass.
 8. Prepare a PR for your branch.
-9. To test building on other platforms, build the *brave-tor-client-build* project in Jenkins using your branch instead of `master`. The build output will give you URLs on S3 of all of the generated binaries (one per platform).
+9. To test building on other platforms, build the *brave-tor-client-build* project in Jenkins using your branch instead of `master` (the "Upload" build option must be ON). The build output will give you URLs on S3 of all of the generated binaries (one per platform).
 10. Download each binary and run `sha512sum` on them. Make sure you use the **post-signing** Windows binary since both signed and unsigned will be in the output.
 11. Merge your `brave/tor_build_scripts` PR once it's been reviewed.
 12. Prepare a PR for the `brave/brave-core-crx-packager` repo bumping the version numbers and hashes (e.g. brave/brave-core-crx-packager#390).
