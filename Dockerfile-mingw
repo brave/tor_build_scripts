@@ -25,6 +25,7 @@ RUN \
   ca-certificates \
   gnupg \
   mingw-w64 \
+  python-is-python3 \
   ; # end of apt-get install
 
 ENV PATH="/usr/i686-w64-mingw32/bin:$PATH"
