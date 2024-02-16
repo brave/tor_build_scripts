@@ -2,7 +2,6 @@
 
 IMAGE_NAME="tor-brave-arm64"
 DOCKERFILE="Dockerfile-linux-arm64"
-DOCKER="$(if command -v podman >/dev/null 2>&1; then echo podman; else echo docker; fi)"
 
 cleanup () {
   echo "cleaning up docker containers/images"
