@@ -64,7 +64,7 @@ The generated binary is of the form `tor-<tor-version>-<os>-brave-<brave-version
 
 In case of updates for `tor` | `libevent` | `zlib` | `openssl`
 
-1. Increment the brave version number in env.sh.
+1. Increment the brave version number in env.sh if needed.
 2. Update the upstream distfile version in env.sh.
 3. Attempt a build.  It should fail.
 4. Confirm that the _signature_ passes and the _hash_ fails.
