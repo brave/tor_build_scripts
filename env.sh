@@ -15,3 +15,5 @@ export ZLIB_HASH="9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df
 export LIBEVENT_HASH=92e6de1be9ec176428fd2367677e61ceffc2ee1cb119035037a27d346b0403bb
 export OPENSSL_HASH=cf3098950cb4d853ad95c0841f1f9c6d3dc102dccfcacd521d93925208b76ac8
 export TOR_HASH="e628b4fab70edb4727715b23cf2931375a9f7685ac08f2c59ea498a178463a86"
+
+export DOCKER="$(command -v docker || command -v podman)"
