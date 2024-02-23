@@ -23,6 +23,7 @@ RUN \
   build-essential \
   curl \
   ca-certificates \
+  file \
   gnupg \
   mingw-w64 \
   python-is-python3 \

@@ -24,6 +24,7 @@ RUN \
   build-essential \
   curl \
   ca-certificates \
+  file \
   gcc-aarch64-linux-gnu \
   gnupg \
   libc6-dev-arm64-cross \
