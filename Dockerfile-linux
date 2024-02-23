@@ -27,6 +27,7 @@ RUN \
   ca-certificates \
   file \
   gnupg \
+  libcap-dev \
   python-is-python3 \
   ; # end of apt-get install
 
@@ -90,6 +91,7 @@ RUN \
               --disable-openssl \
               --prefix="$PWD/install" \
               --disable-shared \
+              --enable-gcc-hardening \
               --enable-static \
               --with-pic && \
   ulimit -n 65536 && \
