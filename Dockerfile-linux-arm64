@@ -28,6 +28,7 @@ RUN \
   gcc-aarch64-linux-gnu \
   gnupg \
   libc6-dev-arm64-cross \
+  libcap-dev \
   python-is-python3 \
   ; # end of apt-get install
 
