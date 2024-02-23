@@ -74,7 +74,7 @@ RUN \
 
 RUN \
   cd "openssl-$openssl_version" && \
-  ./config --prefix="$PWD/root" \
+  ./config --prefix="$PWD/root" --libdir=lib \
     no-dso \
     no-shared \
     no-ssl-trace \
