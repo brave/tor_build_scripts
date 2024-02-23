@@ -26,7 +26,13 @@ cd ../../
 
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C arm64
 cd "arm64/openssl-$OPENSSL_VERSION"
-./Configure --prefix="$PWD/root" darwin64-arm64-cc no-shared no-dso
+./Configure --prefix="$PWD/root" \
+            darwin64-arm64-cc \
+            no-dso \
+            no-shared \
+            no-ssl-trace \
+            no-ui-console
+
 make ${jobs:+-j${jobs}} && make install
 cd ../../
 

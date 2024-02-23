@@ -78,7 +78,10 @@ RUN \
   ./Configure --prefix="$PWD/root" \
     --cross-compile-prefix=aarch64-linux-gnu- \
     linux-aarch64 \
-    no-shared no-dso && \
+    no-dso \
+    no-shared \
+    no-ssl-trace \
+    no-ui-console && \
   make ${jobs:+-j${jobs}} && \
   make install_sw
 
