@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2155
 
 export MACOSX_DEPLOYMENT_TARGET=10.15
 

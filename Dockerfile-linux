@@ -25,6 +25,7 @@ RUN \
   build-essential \
   curl \
   ca-certificates \
+  file \
   gnupg \
   python-is-python3 \
   ; # end of apt-get install
