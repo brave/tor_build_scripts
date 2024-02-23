@@ -80,7 +80,10 @@ RUN \
   ./Configure --prefix="$PWD/root" \
     --cross-compile-prefix=i686-w64-mingw32- \
     mingw \
-    no-shared no-dso && \
+    no-dso \
+    no-shared \
+    no-ssl-trace \
+    no-ui-console && \
   make ${jobs:+-j${jobs}} && \
   make install_sw
 

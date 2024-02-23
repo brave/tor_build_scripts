@@ -74,8 +74,11 @@ RUN \
 
 RUN \
   cd "openssl-$openssl_version" && \
-  ./config --prefix="$PWD/root" \
-    no-shared no-dso && \
+  ./config --prefix="$PWD/root" --libdir=lib \
+    no-dso \
+    no-shared \
+    no-ssl-trace \
+    no-ui-console && \
   make ${jobs:+-j${jobs}} && \
   make test && \
   make install
