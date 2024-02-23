@@ -90,6 +90,7 @@ RUN \
               --disable-openssl \
               --prefix="$PWD/install" \
               --disable-shared \
+              --enable-gcc-hardening \
               --enable-static \
               --with-pic && \
               CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++ && \

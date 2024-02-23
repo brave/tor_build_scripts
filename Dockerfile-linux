@@ -88,6 +88,7 @@ RUN \
               --disable-openssl \
               --prefix="$PWD/install" \
               --disable-shared \
+              --enable-gcc-hardening \
               --enable-static \
               --with-pic && \
   ulimit -n 65536 && \
