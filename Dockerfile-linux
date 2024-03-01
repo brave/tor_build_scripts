@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:jammy@sha256:f9d633ff6640178c2d0525017174a688e2c1aef28f0a0130b26bd5554491f0da
 
 ARG zlib_version
 ARG zlib_hash
