@@ -44,8 +44,8 @@ RUN \
   tar -zxvf "zlib-$zlib_version.tar.gz"
 
 RUN \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/openssl/openssl/releases/download/openssl-$openssl_version/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/openssl/openssl/releases/download/openssl-$openssl_version/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
   gpg --keyring /openssl.gpg --verify "openssl-$openssl_version.tar.gz.asc" "openssl-$openssl_version.tar.gz" && \
   echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf "openssl-$openssl_version.tar.gz"
