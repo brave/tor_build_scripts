@@ -79,10 +79,33 @@ RUN \
   ./Configure --prefix="$PWD/root" \
     --cross-compile-prefix=aarch64-linux-gnu- \
     linux-aarch64 \
+    no-apps \
+    no-cmp \
+    no-cms \
+    no-comp \
+    no-ct \
+    no-dgram \
+    no-docs \
     no-dso \
+    no-ec2m \
+    no-engine \
+    no-http \
+    no-legacy \
+    no-module \
+    no-nextprotoneg \
+    no-ocsp \
+    no-padlockeng \
+    no-psk \
+    no-quic \
+    no-rfc3779 \
     no-shared \
+    no-srp \
+    no-srtp \
     no-ssl-trace \
-    no-ui-console && \
+    no-static-engine \
+    no-ts \
+    no-ui-console \
+    no-uplink && \
   make ${jobs:+-j${jobs}} && \
   make install_sw
 

@@ -28,10 +28,33 @@ tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C arm64
 cd "arm64/openssl-$OPENSSL_VERSION"
 ./Configure --prefix="$PWD/root" \
             darwin64-arm64-cc \
+            no-apps \
+            no-cmp \
+            no-cms \
+            no-comp \
+            no-ct \
+            no-dgram \
+            no-docs \
             no-dso \
+            no-ec2m \
+            no-engine \
+            no-http \
+            no-legacy \
+            no-module \
+            no-nextprotoneg \
+            no-ocsp \
+            no-padlockeng \
+            no-psk \
+            no-quic \
+            no-rfc3779 \
             no-shared \
+            no-srp \
+            no-srtp \
             no-ssl-trace \
-            no-ui-console
+            no-static-engine \
+            no-ts \
+            no-ui-console \
+            no-uplink
 
 make ${jobs:+-j${jobs}} && make install
 cd ../../
