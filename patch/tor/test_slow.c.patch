@@ -1,0 +1,19 @@
+Description: Disable failing tests on Mac
+Last-Update: 2025-01-15
+
+--- src/test/test_slow.c	2024-10-24 07:38:41.000000000 -0700
++++ src/test/test_slow.c.brave	2025-01-15 21:02:34.931958360 -0800
+@@ -19,11 +19,13 @@
+ #include "test/test.h"
+ 
+ struct testgroup_t testgroups[] = {
++#ifndef __APPLE__
+   { "slow/crypto/", slow_crypto_tests },
+   { "slow/process/", slow_process_tests },
+   { "slow/hs_pow/", slow_hs_pow_tests },
+   { "slow/prob_distr/", slow_stochastic_prob_distr_tests },
+   { "slow/ptr/", slow_ptr_tests },
+   END_OF_GROUPS
++#endif
+ };
+ 

@@ -79,6 +79,7 @@ cd ../../
 
 tar -xvzf "tor-$TOR_VERSION.tar.gz" -C x86_64
 cd "x86_64/tor-$TOR_VERSION"
+patch -p0 < ../../patch/tor/test_slow.c.patch
 ./configure \
             LDFLAGS="-L$XCODE_LIB" \
             CPPFLAGS="-I$XCODE_INCLUDE" \

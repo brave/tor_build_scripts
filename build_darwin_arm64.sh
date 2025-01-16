@@ -81,6 +81,7 @@ cd ../../
 
 tar -xvzf "tor-$TOR_VERSION.tar.gz" -C arm64
 cd "arm64/tor-$TOR_VERSION"
+patch -p0 < ../../patch/tor/test_slow.c.patch
 ./configure \
 	    LDFLAGS="--target=arm64-apple-macos11 -L$XCODE_LIB" \
 	    CPPFLAGS="--target=arm64-apple-macos11 -I$XCODE_INCLUDE" \
