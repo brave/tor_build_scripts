@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:noble
 
 ARG zlib_version
 ARG zlib_hash
@@ -43,8 +43,8 @@ RUN \
   tar -zxvf "zlib-$zlib_version.tar.gz"
 
 RUN \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
-  curl --proto '=https' --tlsv1.3 -fsSL "https://www.openssl.org/source/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/openssl/openssl/releases/download/openssl-$openssl_version/openssl-$openssl_version.tar.gz" -o "openssl-$openssl_version.tar.gz" && \
+  curl --proto '=https' --tlsv1.3 -fsSL "https://github.com/openssl/openssl/releases/download/openssl-$openssl_version/openssl-$openssl_version.tar.gz.asc" -o "openssl-$openssl_version.tar.gz.asc" && \
   gpg --keyring /openssl.gpg --verify "openssl-$openssl_version.tar.gz.asc" "openssl-$openssl_version.tar.gz" && \
   echo "$openssl_hash  openssl-$openssl_version.tar.gz" | shasum -a 256 -c - && \
   tar -xvzf "openssl-$openssl_version.tar.gz"
@@ -76,10 +76,33 @@ RUN \
 RUN \
   cd "openssl-$openssl_version" && \
   ./config --prefix="$PWD/root" --libdir=lib \
+    no-apps \
+    no-cmp \
+    no-cms \
+    no-comp \
+    no-ct \
+    no-dgram \
+    no-docs \
     no-dso \
+    no-ec2m \
+    no-engine \
+    no-http \
+    no-legacy \
+    no-module \
+    no-nextprotoneg \
+    no-ocsp \
+    no-padlockeng \
+    no-psk \
+    no-quic \
+    no-rfc3779 \
     no-shared \
+    no-srp \
+    no-srtp \
     no-ssl-trace \
-    no-ui-console && \
+    no-static-engine \
+    no-ts \
+    no-ui-console \
+    no-uplink && \
   make ${jobs:+-j${jobs}} && \
   make test && \
   make install
