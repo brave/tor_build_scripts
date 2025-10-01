@@ -21,7 +21,7 @@ rm -rf x86_64 && mkdir x86_64
 tar -xvzf "zlib-$ZLIB_VERSION.tar.gz" -C x86_64
 cd "x86_64/zlib-$ZLIB_VERSION"
 ./configure --prefix="$PWD/root"
-make ${jobs:+-j${jobs}} && make ${jobs:+-j$jobs} check && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
 
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C x86_64
