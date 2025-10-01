@@ -27,34 +27,34 @@ cd ../../
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C x86_64
 cd "x86_64/openssl-$OPENSSL_VERSION"
 ./Configure --prefix="$PWD/root" \
-            darwin64-x86_64-cc \
-            no-apps \
-            no-cmp \
-            no-cms \
-            no-comp \
-            no-ct \
-            no-dgram \
-            no-docs \
-            no-dso \
-            no-ec2m \
-            no-engine \
-            no-http \
-            no-legacy \
-            no-module \
-            no-nextprotoneg \
-            no-ocsp \
-            no-padlockeng \
-            no-psk \
-            no-quic \
-            no-rfc3779 \
-            no-shared \
-            no-srp \
-            no-srtp \
-            no-ssl-trace \
-            no-static-engine \
-            no-ts \
-            no-ui-console \
-            no-uplink
+  darwin64-x86_64-cc \
+  no-apps \
+  no-cmp \
+  no-cms \
+  no-comp \
+  no-ct \
+  no-dgram \
+  no-docs \
+  no-dso \
+  no-ec2m \
+  no-engine \
+  no-http \
+  no-legacy \
+  no-module \
+  no-nextprotoneg \
+  no-ocsp \
+  no-padlockeng \
+  no-psk \
+  no-quic \
+  no-rfc3779 \
+  no-shared \
+  no-srp \
+  no-srtp \
+  no-ssl-trace \
+  no-static-engine \
+  no-ts \
+  no-ui-console \
+  no-uplink
 make ${jobs:+-j${jobs}} && make test && make install
 cd ../../
 
@@ -66,14 +66,14 @@ tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C x86_64
 cd "x86_64/libevent-$LIBEVENT_VERSION"
 patch -p0 < ../../patch/libevent/regress.c.patch
 ./configure \
-            LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib" \
-            CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \
-            --prefix="$PWD/install" \
-            --disable-openssl \
-            --disable-shared \
-            --enable-static \
-            --disable-clock-gettime \
-            --with-pic
+  LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib" \
+  CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \
+  --prefix="$PWD/install" \
+  --disable-openssl \
+  --disable-shared \
+  --enable-static \
+  --disable-clock-gettime \
+  --with-pic
 make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
 
@@ -81,23 +81,23 @@ tar -xvzf "tor-$TOR_VERSION.tar.gz" -C x86_64
 cd "x86_64/tor-$TOR_VERSION"
 patch -p0 < ../../patch/tor/test_slow.c.patch
 ./configure \
-            LDFLAGS="-L$XCODE_LIB" \
-            CPPFLAGS="-I$XCODE_INCLUDE" \
-            --prefix="$PWD/root" \
-            --enable-static-libevent \
-            --enable-static-openssl  \
-            --enable-static-zlib  \
-            --with-libevent-dir="$PWD/../libevent-$LIBEVENT_VERSION/install" \
-            --with-openssl-dir="$PWD/../openssl-$OPENSSL_VERSION/root" \
-            --with-zlib-dir="$PWD/../zlib-$ZLIB_VERSION/root" \
-            --disable-asciidoc \
-            --disable-html-manual \
-            --disable-lzma \
-            --disable-manpage \
-            --disable-zstd \
-            --disable-module-relay \
-            --disable-module-dirauth \
-            ac_cv_func_getentropy=no \
-            ac_cv_func_clock_gettime=no
+  LDFLAGS="-L$XCODE_LIB" \
+  CPPFLAGS="-I$XCODE_INCLUDE" \
+  --prefix="$PWD/root" \
+  --enable-static-libevent \
+  --enable-static-openssl  \
+  --enable-static-zlib  \
+  --with-libevent-dir="$PWD/../libevent-$LIBEVENT_VERSION/install" \
+  --with-openssl-dir="$PWD/../openssl-$OPENSSL_VERSION/root" \
+  --with-zlib-dir="$PWD/../zlib-$ZLIB_VERSION/root" \
+  --disable-asciidoc \
+  --disable-html-manual \
+  --disable-lzma \
+  --disable-manpage \
+  --disable-zstd \
+  --disable-module-relay \
+  --disable-module-dirauth \
+  ac_cv_func_getentropy=no \
+  ac_cv_func_clock_gettime=no
 make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
