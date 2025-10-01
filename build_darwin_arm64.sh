@@ -21,7 +21,7 @@ rm -rf arm64 && mkdir arm64
 tar -xvzf "zlib-$ZLIB_VERSION.tar.gz" -C arm64
 cd "arm64/zlib-$ZLIB_VERSION"
 CFLAGS="-target arm64-apple-macos11" LDFLAGS="-target arm64-apple-macos11" ./configure --prefix="$PWD/root"
-make ${jobs:+-j${jobs}} && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
 
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C arm64
@@ -55,8 +55,7 @@ cd "arm64/openssl-$OPENSSL_VERSION"
             no-ts \
             no-ui-console \
             no-uplink
-
-make ${jobs:+-j${jobs}} && make install
+make ${jobs:+-j${jobs}} && make test && make install
 cd ../../
 
 #Apple messed up getentropy and clock_gettimesymbols when they added two functions in Sierra: 
@@ -103,5 +102,5 @@ patch -p0 < ../../patch/tor/test_slow.c.patch
             --disable-tool-name-check \
 	    ac_cv_func_getentropy=no \
 	    ac_cv_func_clock_gettime=no
-make ${jobs:+-j${jobs}} && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
