@@ -1,6 +1,9 @@
 #!/bin/sh -eu
 
-echo "running build_darwin_x86_64.sh..."
+BUILD_CPU=x86_64
+BUILD_HOST=x86_64
+
+echo "running build_darwin_$BUILD_CPU.sh..."
 
 SDK_PATH=$(xcrun --show-sdk-path)
 XCODE_LIB="$SDK_PATH/usr/lib/"
@@ -16,18 +19,18 @@ else
   jobs=$(sysctl -n hw.logicalcpu_max)
 fi
 
-rm -rf x86_64 && mkdir x86_64
+rm -rf $BUILD_CPU && mkdir $BUILD_CPU
 
-tar -xvzf "zlib-$ZLIB_VERSION.tar.gz" -C x86_64
-cd "x86_64/zlib-$ZLIB_VERSION"
-./configure --prefix="$PWD/root"
+tar -xvzf "zlib-$ZLIB_VERSION.tar.gz" -C $BUILD_CPU
+cd "$BUILD_CPU/zlib-$ZLIB_VERSION"
+CFLAGS="-target $BUILD_CPU-apple-macos11" LDFLAGS="-target $BUILD_CPU-apple-macos11" ./configure --prefix="$PWD/root"
 make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
 
-tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C x86_64
-cd "x86_64/openssl-$OPENSSL_VERSION"
+tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C $BUILD_CPU
+cd "$BUILD_CPU/openssl-$OPENSSL_VERSION"
 ./Configure --prefix="$PWD/root" \
-  darwin64-x86_64-cc \
+  darwin64-$BUILD_CPU-cc \
   no-apps \
   no-cmp \
   no-cms \
@@ -62,27 +65,28 @@ cd ../../
 #they forgot to decorate them with appropriate AVAILABLE_MAC_OS_VERSION checks. 
 #So we have to explicitly disable them for binaries to work on MacOS 10.11.
 
-tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C x86_64
-cd "x86_64/libevent-$LIBEVENT_VERSION"
+tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C $BUILD_CPU
+cd "$BUILD_CPU/libevent-$LIBEVENT_VERSION"
 patch -p0 < ../../patch/libevent/regress.c.patch
 ./configure \
-  LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib" \
-  CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include" \
+  LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib --target=$BUILD_CPU-apple-macos11" \
+  CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include --target=$BUILD_CPU-apple-macos11" \
   --prefix="$PWD/install" \
   --disable-openssl \
   --disable-shared \
   --enable-static \
+  --host=$BUILD_HOST \
   --disable-clock-gettime \
   --with-pic
 make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
 
-tar -xvzf "tor-$TOR_VERSION.tar.gz" -C x86_64
-cd "x86_64/tor-$TOR_VERSION"
+tar -xvzf "tor-$TOR_VERSION.tar.gz" -C $BUILD_CPU
+cd "$BUILD_CPU/tor-$TOR_VERSION"
 patch -p0 < ../../patch/tor/test_slow.c.patch
 ./configure \
-  LDFLAGS="-L$XCODE_LIB" \
-  CPPFLAGS="-I$XCODE_INCLUDE" \
+  LDFLAGS="--target=$BUILD_CPU-apple-macos11 -L$XCODE_LIB" \
+  CPPFLAGS="--target=$BUILD_CPU-apple-macos11 -I$XCODE_INCLUDE" \
   --prefix="$PWD/root" \
   --enable-static-libevent \
   --enable-static-openssl  \
@@ -97,6 +101,7 @@ patch -p0 < ../../patch/tor/test_slow.c.patch
   --disable-zstd \
   --disable-module-relay \
   --disable-module-dirauth \
+  --host=$BUILD_HOST \
   --disable-tool-name-check \
   ac_cv_func_getentropy=no \
   ac_cv_func_clock_gettime=no
