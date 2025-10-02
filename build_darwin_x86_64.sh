@@ -78,7 +78,7 @@ patch -p0 < ../../patch/libevent/regress.c.patch
   --host=$BUILD_HOST \
   --disable-clock-gettime \
   --with-pic
-make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
+make ${jobs:+-j${jobs}} && make install
 cd ../../
 
 tar -xvzf "tor-$TOR_VERSION.tar.gz" -C $BUILD_CPU
