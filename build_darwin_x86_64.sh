@@ -68,6 +68,7 @@ cd ../../
 tar -zxvf "libevent-$LIBEVENT_VERSION.tar.gz" -C $BUILD_CPU
 cd "$BUILD_CPU/libevent-$LIBEVENT_VERSION"
 patch -p0 < ../../patch/libevent/regress.c.patch
+patch -p0 < ../../patch/libevent/regress_http.c.patch
 ./configure \
   LDFLAGS="-L$PWD/../openssl-$OPENSSL_VERSION/root/lib --target=$BUILD_CPU-apple-macos11" \
   CPPFLAGS="-I$PWD/../openssl-$OPENSSL_VERSION/include --target=$BUILD_CPU-apple-macos11" \
@@ -78,7 +79,7 @@ patch -p0 < ../../patch/libevent/regress.c.patch
   --host=$BUILD_HOST \
   --disable-clock-gettime \
   --with-pic
-make ${jobs:+-j${jobs}} && make install
+make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
 cd ../../
 
 tar -xvzf "tor-$TOR_VERSION.tar.gz" -C $BUILD_CPU

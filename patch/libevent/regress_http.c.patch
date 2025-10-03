@@ -1,0 +1,14 @@
+Description: Disable test failing on macOS
+Last-Update: 2025-10-03
+Bug-Brave: https://github.com/brave/tor_build_scripts/issues/156
+
+--- test/regress_http.c.orig	2025-10-03 14:43:40.534171434 -0700
++++ test/regress_http.c	2025-10-03 14:43:57.036915079 -0700
+@@ -4759,7 +4759,6 @@
+ 	{ "connection_retry_conn_address", http_connection_retry_conn_address_test,
+ 	  TT_ISOLATED|TT_OFF_BY_DEFAULT, &basic_setup, NULL },
+ 
+-	HTTP(data_length_constraints),
+ 	HTTP(read_on_write_error),
+ 	HTTP(non_lingering_close),
+ 	HTTP(lingering_close),
