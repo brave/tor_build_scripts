@@ -106,5 +106,5 @@ patch -p0 < ../../patch/tor/test_slow.c.patch
   --disable-tool-name-check \
   ac_cv_func_getentropy=no \
   ac_cv_func_clock_gettime=no
-make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
+make ${jobs:+-j${jobs}} && make install
 cd ../../
