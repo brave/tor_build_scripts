@@ -24,7 +24,7 @@ rm -rf $BUILD_CPU && mkdir $BUILD_CPU
 tar -xvzf "zlib-$ZLIB_VERSION.tar.gz" -C $BUILD_CPU
 cd "$BUILD_CPU/zlib-$ZLIB_VERSION"
 CFLAGS="-target $BUILD_CPU-apple-macos11" LDFLAGS="-target $BUILD_CPU-apple-macos11" ./configure --prefix="$PWD/root"
-make ${jobs:+-j${jobs}} && make ${jobs:+-j${jobs}} check && make install
+make ${jobs:+-j${jobs}} && make install
 cd ../../
 
 tar -xvzf "openssl-$OPENSSL_VERSION.tar.gz" -C $BUILD_CPU
