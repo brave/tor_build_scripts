@@ -22,7 +22,7 @@ If Renovate is unavailable or a release is missed, these are the upstream
 sources:
 
 - Libevent: [GitHub repo tags](https://github.com/libevent/libevent/tags.atom)
-- OpenSSL: [upstream changelog](https://www.openssl.org/news/cl111.txt)
+- OpenSSL: [upstream changelog](https://openssl-library.org/news/changelog/) and [security advisories](https://openssl-library.org/news/vulnerabilities/)
 - Tor: [packager mailing list](https://lists.torproject.org/cgi-bin/mailman/listinfo/tor-packagers) and [announcements forum topic](https://forum.torproject.org/c/news/tor-release-announcement/28)
 - Zlib: [upstream changeLog](https://zlib.net/ChangeLog.txt)
 
