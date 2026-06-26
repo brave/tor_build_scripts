@@ -60,9 +60,24 @@ The keys are listed on https://www.openssl.org/community/omc.html.
 
 The generated binary is of the form `tor-<tor-version>-<os>-brave-<brave-version>`
 
-### Updates:
+### Updates
 
-In case of updates for `tor` | `libevent` | `zlib` | `openssl`
+Follow these steps in case of updates for `tor` | `libevent` | `zlib` | `openssl`.
+
+This process is now almost fully automated in CI. Start with automation and switch to the manual process if automation fails for some reason.
+
+### Automated process
+
+1. Start a new _Build with Parameters_ on <https://ci.brave.com/job/brave-tor-client-release/> (branch = `master`) specifying the versions and hashes of the components to update, let the others empty to keep the existing versions. To get the hash, download the tarball and run `sha256sum` on it.
+2. Look for a PR like <https://github.com/brave/tor_build_scripts/pull/171>, review and merge.
+3. Look for a PR like <https://github.com/brave/brave-core-crx-packager/pull/1192> and review, but *do NOT merge*.
+4. Look for a thread on `#testers` like https://bravesoftware.slack.com/archives/C0YL5KMA8/p1780427378323769 to know when the new tor daemon is available in dev.
+5. Check that the correct version of the tor daemon is downloaded when running `brave-browser --use-dev-goupdater-url` (check the terminal log messages). Open <https://brave.com> and then its onion URL to check that the tor daemon is working.
+6. Wait for QA's verification to be complete before merging the `brave/brave-core-crx-packager` PR
+7. Kick off a _Build with Parameters_ on <https://ci.brave.com/job/brave-core-ext-tor-client-update-publish/> (branch = `master`) to upload the new tor daemon to the prod server. Test it like in step 5 but using the prod url for goupdater.
+8. Go back to the QA Slack thread and ask for a quick check on all platforms.
+
+### Manual process
 
 1. Increment the brave version number in env.sh if needed.
 2. Update the upstream distfile version in env.sh.
