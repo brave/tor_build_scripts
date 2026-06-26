@@ -24,7 +24,7 @@ sources:
 - Libevent: [GitHub repo tags](https://github.com/libevent/libevent/tags.atom)
 - OpenSSL: [upstream changelog](https://openssl-library.org/news/changelog/) and [security advisories](https://openssl-library.org/news/vulnerabilities/)
 - Tor: [packager mailing list](https://lists.torproject.org/cgi-bin/mailman/listinfo/tor-packagers) and [announcements forum topic](https://forum.torproject.org/c/news/tor-release-announcement/28)
-- Zlib: [upstream changeLog](https://zlib.net/ChangeLog.txt)
+- Zlib: [upstream ChangeLog](https://zlib.net/ChangeLog.txt)
 
 ## Where the hashes come from
 
@@ -36,7 +36,7 @@ the GPG signature; the hash is a pin you compute after verifying.
 - **Tor** publishes a signed hash file directly — read it from
   `https://dist.torproject.org/tor-<version>.tar.gz.sha256sum`
   (verify with the adjacent `.sha256sum.asc`).
-- **zlib / libevent / openssl** ship a detached GPG signature (`.asc`) but no
+- **zlib / libevent / OpenSSL** ship a detached GPG signature (`.asc`) but no
   hash file used by the build; download the canonical tarball, verify the
   signature, then run `shasum -a 256`.
 
