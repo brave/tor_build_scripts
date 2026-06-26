@@ -68,7 +68,7 @@ This process is now almost fully automated in CI. Start with automation and swit
 
 ### Automated process
 
-1. Start a new _Build with Parameters_ on <https://ci.brave.com/job/brave-tor-client-release/> (branch = `master`) specifying the versions and hashes of the components to update, let the others empty to keep the existing versions.
+1. Start a new _Build with Parameters_ on <https://ci.brave.com/job/brave-tor-client-release/> (branch = `master`) specifying the versions and hashes of the components to update, let the others empty to keep the existing versions. To get the hash, download the tarball and run `sha256sum` on it.
 2. Look for a PR like <https://github.com/brave/tor_build_scripts/pull/171>, review and merge.
 3. Look for a PR like <https://github.com/brave/brave-core-crx-packager/pull/1192> and review, but *do NOT merge*.
 4. Look for a thread on `#testers` like https://bravesoftware.slack.com/archives/C0YL5KMA8/p1780427378323769 to know when the new tor daemon is available in dev.
