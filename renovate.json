@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>brave/renovate-config"
+    "local>brave/renovate-config",
+    "local>brave/renovate-config:enable-vulnerability-alerts"
   ],
   "addLabels": ["CI/skip", "dependencies", "renovate"],
   "dependencyDashboard": true,
@@ -51,6 +52,11 @@
     {
       "matchDepNames": ["tor"],
       "allowedVersions": "/^\\d+\\.\\d+\\.\\d+\\.\\d+$/"
+    },
+    {
+      "description": "Surface new releases on the dashboard immediately instead of waiting out the 7-day minimumReleaseAge from the base config; safe because this repo is dashboard-only and every entry is triaged by hand.",
+      "matchDepNames": ["tor", "zlib", "libevent", "openssl"],
+      "minimumReleaseAge": "0 days"
     }
   ]
 }
