@@ -3,5 +3,54 @@
   "extends": [
     "local>brave/renovate-config"
   ],
-  "addLabels": ["CI/skip", "dependencies", "renovate"]
+  "addLabels": ["CI/skip", "dependencies", "renovate"],
+  "dependencyDashboard": true,
+  "dependencyDashboardApproval": true,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^env\\.sh$"],
+      "matchStrings": ["TOR_VERSION=\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "tor",
+      "packageNameTemplate": "tpo/core/tor",
+      "datasourceTemplate": "gitlab-tags",
+      "registryUrlTemplate": "https://gitlab.torproject.org",
+      "extractVersionTemplate": "^tor-(?<version>.+)$",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^env\\.sh$"],
+      "matchStrings": ["ZLIB_VERSION=\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "zlib",
+      "packageNameTemplate": "madler/zlib",
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^v(?<version>.+)$"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^env\\.sh$"],
+      "matchStrings": ["LIBEVENT_VERSION=\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "libevent",
+      "packageNameTemplate": "libevent/libevent",
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^release-(?<version>.+)$",
+      "versioningTemplate": "loose"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^env\\.sh$"],
+      "matchStrings": ["OPENSSL_VERSION=\"(?<currentValue>[^\"]+)\""],
+      "depNameTemplate": "openssl",
+      "packageNameTemplate": "openssl/openssl",
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^openssl-(?<version>.+)$"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDepNames": ["tor"],
+      "allowedVersions": "/^\\d+\\.\\d+\\.\\d+\\.\\d+$/"
+    }
+  ]
 }
