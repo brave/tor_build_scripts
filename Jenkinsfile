@@ -13,7 +13,7 @@ pipeline {
                     GITHUB_API = 'https://api.github.com/repos/brave'
                     PIPELINE_NAME = 'pr-brave-tor-client-build-pr-test-' + CHANGE_BRANCH.replace('/', '-')
 
-                    withCredentials([usernamePassword(credentialsId: 'brave-builds-github-token-for-pr-builder', usernameVariable: 'PR_BUILDER_USER', passwordVariable: 'PR_BUILDER_TOKEN')]) {
+                    withCredentials([usernamePassword(credentialsId: 'brave-builds-pr-builder-token-with-username', usernameVariable: 'PR_BUILDER_USER', passwordVariable: 'PR_BUILDER_TOKEN')]) {
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + '/tor_build_scripts/pulls?head=brave:' + CHANGE_BRANCH, customHeaders: [[name: 'Authorization', value: 'token ' + PR_BUILDER_TOKEN]]).content)[0]
                         SKIP = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/skip') }.equals(1)
                     }
@@ -42,7 +42,7 @@ pipeline {
                                     scm {
                                         git {
                                             remote {
-                                                credentials('brave-builds-github-token-for-pr-builder')
+                                                credentials('brave-builds-pr-builder-token-with-username')
                                                 github('brave/devops', 'https')
                                             }
                                             branch('master')
