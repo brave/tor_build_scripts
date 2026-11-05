@@ -6,15 +6,15 @@ export MACOSX_DEPLOYMENT_TARGET=10.15
 # Reset version number to zero everytime TOR_VERSION changes.
 export BRAVE_TOR_VERSION="0"
 
-export TOR_VERSION="0.4.9.15"
+export TOR_VERSION="0.4.9.16"
 
-export ZLIB_VERSION="1.3.2"
+export ZLIB_VERSION="1.4"
 export LIBEVENT_VERSION="2.1.13-stable"
 export OPENSSL_VERSION="4.0.3"
 
-export ZLIB_HASH="bb329a0a2cd0274d05519d61c667c062e06990d72e125ee2dfa8de64f0119d16"
+export ZLIB_HASH="02dd159783677a749c04adbdd02b55b8a2bcc7e054f51b76b549199a916ad584"
 export LIBEVENT_HASH="f7e9383b8c0baa81b687e5b5eecc01beefaf1b19b64151d95ed61647fe7a315c"
 export OPENSSL_HASH="325b5c806167c13b40b1ffeadfe0248197c00eccc4cf123ec1e28d2d2fd216d9"
-export TOR_HASH="1911f5b216a6814ed143a08bbcff1c6dc96d2ca3b505df9a21876080a92963f3"
+export TOR_HASH="6180e193152f4525bdca5475168419b2a2035b963c3c60162a187f86e6160e48"
 
 export DOCKER="$(command -v docker || command -v podman)"
